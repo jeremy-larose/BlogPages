@@ -20,58 +20,55 @@ namespace BlogProject.Controllers
         }
 
         // GET: Comments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> OriginalIndex()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.BlogUser).Include(c => c.Moderator).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+            var originalComments = await _context.Comments.ToListAsync();
+            return View("Index", originalComments);
         }
 
-        // GET: Comments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> ModeratedIndex()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var moderatedComments = await _context.Comments.Where(c=>c.Moderated != null).ToListAsync();
+            return View("Index", moderatedComments);
+        }
 
-            var comment = await _context.Comments
-                .Include(c => c.BlogUser)
-                .Include(c => c.Moderator)
-                .Include(c => c.Post)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-
-            return View(comment);
+        // public async Task<IActionResult> DeletedIndex()
+        // {
+        //     // Use my soft delete bool
+        // }
+        
+        //GET: Comments
+        public async Task<IActionResult> Index()
+        {
+            var allComments = await _context.Comments.ToListAsync();
+            return View(allComments);
         }
 
         // GET: Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
-            ViewData["ModeratorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
-            return View();
-        }
+        // public IActionResult Create()
+        // {
+        //     ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
+        //     ViewData["ModeratorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
+        //     ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract");
+        //     return View();
+        // }
 
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,BlogUserId,ModeratorId,Body,ModeratedBody,ModerationType,EditedBody,Created,Updated,Moderated,Deleted")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,PostId,BlogUserId,ModeratorId,Body,ModeratedBody,ModerationType,EditedBody,Created,Updated,Moderated,Deleted")]
+            Comment comment)
         {
             if (ModelState.IsValid)
             {
+                comment.Created = DateTime.Now;
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
-            ViewData["ModeratorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.ModeratorId);
-            ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
+
             return View(comment);
         }
 
@@ -88,6 +85,7 @@ namespace BlogProject.Controllers
             {
                 return NotFound();
             }
+
             ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
             ViewData["ModeratorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
@@ -99,7 +97,8 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,ModeratorId,Body,ModeratedBody,ModerationType,EditedBody,Created,Updated,Moderated,Deleted")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,BlogUserId,ModeratorId,Body,ModeratedBody,ModerationType,EditedBody,Created,Updated,Moderated,Deleted")]
+            Comment comment)
         {
             if (id != comment.Id)
             {
@@ -124,8 +123,10 @@ namespace BlogProject.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
             ViewData["ModeratorId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
