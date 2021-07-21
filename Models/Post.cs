@@ -10,6 +10,8 @@ namespace BlogProject.Models
     public class Post
     {
         public int Id { get; set; }
+        
+        [Display( Name="Blog Name")]
         public int BlogId { get; set; }
         public string BlogUserId { get; set; }
 
@@ -22,7 +24,7 @@ namespace BlogProject.Models
         public string Abstract { get; set; }
 
         [Required] public string Content { get; set; }
-        public ReadyStatus IsReady { get; set; }
+        public ReadyStatus ReadyStatus { get; set; }
         public string Slug { get; set; }
 
         [DataType(DataType.Date),Display(Name="Created Date")] public DateTime Created { get; set; }

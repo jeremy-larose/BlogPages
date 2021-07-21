@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace BlogProject.Data.Migrations
+namespace BlogProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -16,7 +16,7 @@ namespace BlogProject.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("BlogProject.Models.Blog", b =>
@@ -154,11 +154,11 @@ namespace BlogProject.Data.Migrations
                     b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
 
-                    b.Property<int>("IsReady")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("Moderated")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ReadyStatus")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Slug")
                         .HasColumnType("text");
