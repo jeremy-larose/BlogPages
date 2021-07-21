@@ -511,8 +511,3 @@ C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Dele
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Details.cshtml.g.cs
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Edit.cshtml.g.cs
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Index.cshtml.g.cs
-C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Tags\Create.cshtml.g.cs
-C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Tags\Delete.cshtml.g.cs
-C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Tags\Details.cshtml.g.cs
-C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Tags\Edit.cshtml.g.cs
-C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Tags\Index.cshtml.g.cs
