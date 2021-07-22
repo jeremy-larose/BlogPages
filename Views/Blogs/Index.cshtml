@@ -1,3 +1,5 @@
+@inject IImageService _imageService;
+@using BlogProject.Services
 @model IEnumerable<BlogProject.Models.Blog>
 
 @{
@@ -21,15 +23,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Updated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Moderated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deleted)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageData)
@@ -56,16 +49,7 @@
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Moderated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageData)
+                <img src="@_imageService.DecodeImage(item.ImageData, item.ContentType)"/>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ContentType)

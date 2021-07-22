@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogProject.Models;
+using BlogProject.Services;
+using BlogProject.ViewModels;
 
 namespace BlogProject
 {
@@ -40,6 +42,13 @@ namespace BlogProject
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            
+            // Register Custom Services
+            services.AddScoped<DataService>();
+            services.AddScoped<IBlogEmailSender, EmailService>();
+            services.AddScoped<IImageService, BasicImageService>();
+            services.AddScoped<ISlugService, BasicSlugService>();
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
         }
 

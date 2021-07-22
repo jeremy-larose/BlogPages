@@ -511,3 +511,7 @@ C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Dele
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Details.cshtml.g.cs
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Edit.cshtml.g.cs
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\Index.cshtml.g.cs
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\MailKit.dll
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\MimeKit.dll
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\BouncyCastle.Crypto.dll
+C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Home\Contact.cshtml.g.cs
