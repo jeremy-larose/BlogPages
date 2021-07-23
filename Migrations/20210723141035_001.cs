@@ -31,7 +31,7 @@ namespace BlogProject.Migrations
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     DisplayName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Image = table.Column<byte[]>(type: "bytea", nullable: true),
+                    ImageData = table.Column<byte[]>(type: "bytea", nullable: true),
                     ContentType = table.Column<string>(type: "text", nullable: true),
                     FacebookURL = table.Column<string>(type: "text", nullable: true),
                     TwitterURL = table.Column<string>(type: "text", nullable: true),

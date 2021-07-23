@@ -427,7 +427,7 @@ namespace BlogProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<byte[]>("Image")
+                    b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
 
                     b.Property<string>("LastName")

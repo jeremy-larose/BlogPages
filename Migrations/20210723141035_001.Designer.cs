@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210722132459_001")]
+    [Migration("20210723141035_001")]
     partial class _001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -429,7 +429,7 @@ namespace BlogProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<byte[]>("Image")
+                    b.Property<byte[]>("ImageData")
                         .HasColumnType("bytea");
 
                     b.Property<string>("LastName")

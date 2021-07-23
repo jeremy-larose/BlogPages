@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Components.Forms;
 using BlogProject.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogProject.Models
 {
@@ -34,7 +35,7 @@ namespace BlogProject.Models
         
         [Display(Name = "Blog Image")] public byte[] ImageData { get; set; }
         [Display(Name = "Image Type")] public string ContentType { get; set; }
-        [NotMapped] public IBrowserFile Image { get; set; }
+        [NotMapped] public IFormFile Image { get; set; }
 
         public virtual Blog Blog { get; set; }
         public virtual BlogUser BlogUser { get; set; }
