@@ -116,9 +116,6 @@
                     <li class="nav-item">
                         <!-- Navbar link--><a class="nav-link" asp-controller="Comments" asp-action="Index">Comments</a>
                     </li>
-                    <li class="nav-item">
-                        <!-- Navbar link-->
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="pages" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                         <div class="dropdown-menu mt-2" aria-labelledby="pages">
@@ -126,6 +123,7 @@
                         </div>
                     </li>
                 </ul>
+                <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>

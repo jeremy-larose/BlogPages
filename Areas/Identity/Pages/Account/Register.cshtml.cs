@@ -38,8 +38,7 @@ namespace BlogProject.Areas.Identity.Pages.Account
             _emailSender = emailSender;
         }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -47,6 +46,22 @@ namespace BlogProject.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "First Name")]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters.", MinimumLength = 2)]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last Name")]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters.", MinimumLength = 2)]
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Display Name")]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and no more than {1} characters.", MinimumLength = 2)]
+            public string DisplayName { get; set; }
+            
+            
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -61,6 +76,7 @@ namespace BlogProject.Areas.Identity.Pages.Account
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+
             public string ConfirmPassword { get; set; }
         }
 
@@ -76,7 +92,14 @@ namespace BlogProject.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new BlogUser { UserName = Input.Email, Email = Input.Email };
+                var user = new BlogUser
+                {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    DisplayName = Input.DisplayName,
+                    UserName = Input.Email, 
+                    Email = Input.Email
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -87,7 +110,7 @@ namespace BlogProject.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new {area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl},
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -95,7 +118,7 @@ namespace BlogProject.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new {email = Input.Email, returnUrl = returnUrl});
                     }
                     else
                     {
@@ -103,6 +126,7 @@ namespace BlogProject.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
