@@ -30,17 +30,16 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
         public string Username { get; set; }
         public string CurrentImage { get; set; }
 
-        [TempData]
-        public string StatusMessage { get; set; }
+        [TempData] public string StatusMessage { get; set; }
 
-        [BindProperty]
-        public InputModel Input { get; set; }
+        [BindProperty] public InputModel Input { get; set; }
 
         public class InputModel
         {
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
             public IFormFile Image { get; set; }
         }
 
@@ -50,7 +49,7 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-            CurrentImage = _imageService.DecodeImage(user.ImageData, user.ContentType );
+            CurrentImage = _imageService.DecodeImage(user.ImageData, user.ContentType);
 
             Input = new InputModel
             {
@@ -85,7 +84,7 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
             }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            
+
             if (Input.PhoneNumber != phoneNumber)
             {
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
@@ -103,7 +102,7 @@ namespace BlogProject.Areas.Identity.Pages.Account.Manage
                 user.ContentType = _imageService.ContentType(Input.Image);
                 await _userManager.UpdateAsync(user);
             }
-            
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

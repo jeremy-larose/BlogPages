@@ -15,6 +15,26 @@
   </div>
 </article>
 
+<hr/>
+  <article>
+    <div class="row">
+      <div class="col text-center h3 font-weight-bold">
+        Custom Post Tags
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        @foreach (var tag in Model.Tags)
+        {
+          <a class="btn btn-warning btn-sm btn-block btn-outline-dark" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()" >
+            #@tag.Text
+          </a>
+        }
+      </div>
+    </div>
+  </article>
+<hr/>
+a
 <!-- Displaying Comments related to this post -->
 <!-- Display image of the content's author --> 
 
@@ -195,4 +215,8 @@
         </div>
       </div>
     </section>
+    
+    This video seems to have skipped over the actual creation of the TagIndex action as well as using the more advanced slugs (done later in the course) for the post/details view. @31:18 of the video, the URL is Details?slug=new-test-of-tags, and at this point of the walkthrough it's still at Details/{id}.
+    
 *@
+
