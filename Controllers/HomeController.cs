@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+using BlogProject.Data;
 using BlogProject.Models;
 using BlogProject.Services;
 using BlogProject.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogProject.Controllers
 {
@@ -12,18 +16,23 @@ namespace BlogProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender)
+        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context)
         {
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var blogs = await _context.Blogs
+                .Include( b => b.BlogUser)
+                .ToListAsync();
+            return View(blogs);
         }
-
+        
         public IActionResult Privacy()
         {
             return View();

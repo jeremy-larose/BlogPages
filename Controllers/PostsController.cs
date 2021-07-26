@@ -34,11 +34,28 @@ namespace BlogProject.Controllers
             var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
             return View(await applicationDbContext.ToListAsync());
         }
-
-        // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        
+        public async Task<IActionResult> BlogPostIndex( int? id )
         {
-            if (id == null)
+            if (id is null)
+                return NotFound();
+
+            var posts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
+
+            return View("Index", posts);
+        }
+
+        public async Task<IActionResult> TagIndex(string tag)
+        {
+            // Get all posts that contain this tag
+            var allPostIds = _context.Tags.Where(t => t.Text == tag).Select(t => t.PostId);
+            var posts = _context.Posts.Where(p => allPostIds.Contains(p.Id)).ToList();
+            return View("Index", posts);
+        }
+        
+        public async Task<IActionResult> Details(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -46,7 +63,9 @@ namespace BlogProject.Controllers
             var post = await _context.Posts
                 .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(p => p.Tags)
+                .FirstOrDefaultAsync(m => m.Slug == slug);
+
             if (post == null)
             {
                 return NotFound();
@@ -54,7 +73,7 @@ namespace BlogProject.Controllers
 
             return View(post);
         }
-
+        
         // GET: Posts/Create
         public IActionResult Create()
         {
@@ -74,19 +93,39 @@ namespace BlogProject.Controllers
             if (ModelState.IsValid)
             {
                 post.Created = DateTime.Now;
-                
+
                 var authorId = _userManager.GetUserId(User);
                 post.BlogUserId = authorId;
-                
+
                 // Use the _imageService to store the incoming user-specified image
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
 
                 // Create the slug and determine if it is unique
                 var slug = _slugService.URLFriendly(post.Title);
-                if (!_slugService.IsUnique(slug))
+
+                // Create a variable to store whether an error has occurred.
+                var validationError = false;
+
+                if (string.IsNullOrEmpty(slug))
                 {
-                    ModelState.AddModelError("Title", "The title you provided cannot be used as it results in a duplicate slug.");
+                    validationError = true;
+                    ModelState.AddModelError("", "The title you provided cannot be used as it results in an empty slug.");
+                }
+                // Detect incoming duplicate Slugs
+                else if (!_slugService.IsUnique(slug))
+                {
+                    validationError = true;
+                    ModelState.AddModelError("", "The title you provided cannot be used as it results in a duplicate slug.");
+                }
+                else if (slug.Contains("test"))
+                {
+                    validationError = true;
+                    ModelState.AddModelError("Title", "The slug you provided cannot contain the word 'test'.");
+                }
+
+                if (validationError)
+                {
                     ViewData["TagValues"] = string.Join(",", tagValues);
                     return View(post);
                 }
@@ -123,7 +162,7 @@ namespace BlogProject.Controllers
             }
 
             var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
-            
+
             if (post == null)
             {
                 return NotFound();
@@ -140,7 +179,7 @@ namespace BlogProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,ReadyStatus")]
-            Post post, IFormFile newImage, List<string> tagValues )
+            Post post, IFormFile newImage, List<string> tagValues)
         {
             if (id != post.Id)
             {
@@ -151,24 +190,41 @@ namespace BlogProject.Controllers
             {
                 try
                 {
+                    // Create a copy of the original post for validation
                     var newPost = await _context.Posts
-                        .Include( p=>p.Tags ).FirstOrDefaultAsync( p=>p.Id == post.Id );
+                        .Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now;
                     newPost.Title = post.Abstract;
                     newPost.Abstract = post.Abstract;
                     newPost.Content = post.Content;
                     newPost.ReadyStatus = post.ReadyStatus;
-                    
+
+                    var newSlug = _slugService.URLFriendly(newPost.Title);
+                    if (newSlug != newPost.Slug)
+                    {
+                        if (_slugService.IsUnique(newSlug))
+                        {
+                            newPost.Title = post.Title;
+                            newPost.Slug = newSlug;
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Title", "This title cannot be used as it results in a duplicate slug.");
+                            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
+                            return View(post);
+                        }
+                    }
+
                     if (newImage is not null)
                     {
                         newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
                         newPost.ContentType = _imageService.ContentType(newImage);
                     }
-                    
+
                     // Remove all tags previously associated with this post
                     _context.Tags.RemoveRange(newPost.Tags);
-                    
+
                     // Add in new tags from the edit form
                     foreach (var tagText in tagValues)
                     {
@@ -179,7 +235,7 @@ namespace BlogProject.Controllers
                             Text = tagText,
                         });
                     }
-                    
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -238,13 +294,13 @@ namespace BlogProject.Controllers
             return _context.Posts.Any(e => e.Id == id);
         }
 
-    //    public IActionResult TagIndex( List<string> tagValues )
-  //      {
+        //    public IActionResult TagIndex( List<string> tagValues )
+        //      {
 //            var post = _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(t => t.Tags == tagValues);
 
-            //return View(post);
-            //var tag = await _context.Posts.Where(p => p.Tags).Contains( );
-            //return View(tag);
+        //return View(post);
+        //var tag = await _context.Posts.Where(p => p.Tags).Contains( );
+        //return View(tag);
         //}
     }
 }

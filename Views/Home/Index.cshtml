@@ -1,4 +1,6 @@
-﻿@{
+﻿@using BlogProject.Models
+@model IEnumerable<Blog>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -76,31 +78,34 @@
 <div class="row">
 <div class="col-lg-9 mb-5 mb-lg-0">
     <div class="row align-items-center mb-5">
-        <div class="col-lg-6">
-            <a class="d-block post-trending mb-4" href="post.html">
-                <img class="img-fluid w-100" src="img/post-img-1.jpg" alt=""/>
-            </a>
-        </div>
-        <div class="col-lg-6">
-            <ul class="list-inline">
-                <li class="list-inline-item mr-2">
-                    <a class="category-link font-weight-normal" href="#">Fashion</a>
-                </li>
-                <li class="list-inline-item mx-2">
-                    <a class="text-uppercase meta-link font-weight-normal" href="#">John Smith</a>
-                </li>
-                <li class="list-inline-item mx-2">
-                    <a class="text-uppercase meta-link font-weight-normal" href="#">15 Sep 2020</a>
-                </li>
-            </ul>
-            <h2 class="h3 mb-4">
-                <a class="d-block reset-anchor" href="post.html">Summer of Love: The History of San Francisco</a>
-            </h2>
-            <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-            <a class="btn btn-link p-0 read-more-btn" href="post.html">
-                <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
-            </a>
-        </div>
+        @foreach (var blog in Model)
+        {
+            <div class="col-lg-6">
+                <a class="d-block post-trending mb-4" href="post.html">
+                    <img class="img-fluid w-100" src="img/post-img-1.jpg" alt=""/>
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <ul class="list-inline">
+                    <li class="list-inline-item mr-2">
+                        <a class="category-link font-weight-normal" asp-controller="Posts" asp-action="TagIndex">#Tags</a>
+                    </li>
+                    <li class="list-inline-item mx-2">
+                        <a class="text-uppercase meta-link font-weight-normal" href="#">@blog.BlogUser.FullName</a>
+                    </li>
+                    <li class="list-inline-item mx-2">
+                        <a class="text-uppercase meta-link font-weight-normal" href="#">@blog.Created.ToString("MMM dd, yyyy")</a>
+                    </li>
+                </ul>
+                <h2 class="h3 mb-4">
+                    <a class="d-block reset-anchor" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">@blog.Name</a>
+                </h2>
+                <p class="text-muted">@blog.Description</p>
+                <a class="btn btn-link p-0 read-more-btn" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
+                    <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
+                </a>
+            </div>
+        }
     </div>
     <div class="row align-items-center mb-5">
         <div class="col-lg-6">
