@@ -116,12 +116,19 @@
                     <li class="nav-item">
                         <!-- Navbar link--><a class="nav-link" asp-controller="Comments" asp-action="Index">Comments</a>
                     </li>
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+                        </li>
+                    }
+                    @*
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="pages" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
                         <div class="dropdown-menu mt-2" aria-labelledby="pages">
                             <a class="dropdown-item" asp-controller="Home" asp-action="Index">Home</a><a class="dropdown-item" asp-controller="Blogs" asp-action="Index">Listing</a><a class="dropdown-item" asp-controller="Posts" asp-action="Index">Post </a>
                         </div>
-                    </li>
+                    </li> *@
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
