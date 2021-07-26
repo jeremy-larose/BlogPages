@@ -5,10 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogProject.Data;
+using BlogProject.Enums;
 using BlogProject.Models;
 using BlogProject.Services;
 using BlogProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace BlogProject.Controllers
 {
@@ -17,6 +19,7 @@ namespace BlogProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private const int ItemsPerPage = 5;
 
         public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context)
         {
@@ -25,12 +28,21 @@ namespace BlogProject.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index( int? page )
         {
-            var blogs = await _context.Blogs
-                .Include( b => b.BlogUser)
-                .ToListAsync();
-            return View(blogs);
+            var pageNumber = page ?? 1;
+
+            // var blogs = _context.Blogs
+            //     .Where(b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))
+            //     .OrderByDescending(b => b.Created)
+            //     .ToPagedListAsync( pageNumber, ItemsPerPage );
+            
+            var blogs = _context.Blogs
+                .Include( b=>b.BlogUser )
+                .OrderByDescending(b => b.Created)
+                .ToPagedListAsync( pageNumber, ItemsPerPage );
+
+            return View(await blogs);
         }
         
         public IActionResult Privacy()

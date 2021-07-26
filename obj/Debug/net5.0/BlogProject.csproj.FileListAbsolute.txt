@@ -515,3 +515,9 @@ C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\MailKit.dll
 C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\MimeKit.dll
 C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\BouncyCastle.Crypto.dll
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Home\Contact.cshtml.g.cs
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\JetBrains.Annotations.dll
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\X.PagedList.dll
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\X.PagedList.Mvc.Core.dll
+C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\X.PagedList.Web.Common.dll
+C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\BlogPostIndex.cshtml.g.cs
+C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\SearchIndex.cshtml.g.cs
