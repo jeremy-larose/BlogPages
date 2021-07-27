@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using BlogProject.Enums;
+using JetBrains.Annotations;
 
 namespace BlogProject.Models
 {
@@ -15,8 +16,9 @@ namespace BlogProject.Models
         [StringLength(300, ErrorMessage = "The {0} must be greater than {2} but less than {1} characters long.", MinimumLength = 2)]
         public string Body { get; set; }
 
-        [Required, Display(Name="Moderated Comment")]
+        [Display(Name="Moderated Comment")]
         [StringLength(300, ErrorMessage = "The {0} must be greater than {2} but less than {1} characters long.", MinimumLength = 2)]
+        [CanBeNull]
         public string ModeratedBody { get; set; }
         public ModerationType ModerationType { get; set; }
         

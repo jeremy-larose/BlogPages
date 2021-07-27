@@ -235,7 +235,7 @@ namespace BlogProject.Migrations
                     BlogUserId = table.Column<string>(type: "text", nullable: true),
                     ModeratorId = table.Column<string>(type: "text", nullable: true),
                     Body = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
-                    ModeratedBody = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
+                    ModeratedBody = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     ModerationType = table.Column<int>(type: "integer", nullable: false),
                     EditedBody = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),

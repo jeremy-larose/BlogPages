@@ -93,7 +93,6 @@ namespace BlogProject.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ModeratedBody")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("character varying(300)");
 
