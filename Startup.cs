@@ -31,8 +31,7 @@ namespace BlogProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(ConnectionService.GetConnectionString(Configuration)));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<BlogUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -50,7 +49,6 @@ namespace BlogProject
             services.AddScoped<ISlugService, BasicSlugService>();
             services.AddScoped<BlogSearchService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
