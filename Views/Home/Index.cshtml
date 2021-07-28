@@ -12,7 +12,7 @@
 @model IPagedList<Blog>
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Maxirose";
     Layout = "_Layout";
 }
 
@@ -20,6 +20,35 @@
     @foreach (var blog in Model)
     {
         <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+            <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                <div class="mainflip">
+                    <div class="frontside">
+                        <div class="card-body text-center" style="width:20rem;">
+                            <img class="card-img-top img-fluid" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" alt="card image">
+                            <div class="card-body">
+                                <h4 class="card-title">@blog.Name</h4>
+                                <p class="card-subtitle">by: @blog.BlogUser.FullName</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="backside">
+                        <div class="card" style="width:20rem;">
+                            <div class="card-header">
+                                @blog.Name
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">@blog.BlogUser.FullName</h4>
+                                <p class="card-text">@blog.Description</p>
+                                <a asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id" class="btn btn-info btn-md">Read Posts</a>
+                            </div>
+                            <div class="card-footer">
+                                @blog.Created.ToString("MMM dd, yyyy")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card border-dark">
                 <img class="card-img-top" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)"/>
                 <div class="card-body text-center">
@@ -29,7 +58,7 @@
                         <hr class="card-hr"/>
                     </div>
                     <div>
-                        <p class="card-text cftooltip" data-toggle="tooltip" data-placement="top" title="" data-original-title="@blog.Description">@blog.Description</p>
+                        <p class="card-text mrtooltip" data-toggle="tooltip" data-placement="top" title="" data-original-title="@blog.Description">@blog.Description</p>
                     </div>
                     <br/>
                     <div class="text-center">
@@ -58,18 +87,18 @@
 <hr/>
 <div class="row">
     <div class="col h3">
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber ) of @Model.PageCount
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     </div>
 </div>
 
 <!-- Paged List Core -->
 <div class="row">
     <div class="col">
-        @Html.PagedListPager( Model, page=>Url.Action("Index", new { page = page}),
+        @Html.PagedListPager(Model, page => Url.Action("Index", new {page = page}),
             new PagedListRenderOptions()
             {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" }
+                LiElementClasses = new string[] {"page-item"},
+                PageClasses = new string[] {"page-link"}
             })
     </div>
 </div>

@@ -6,8 +6,6 @@
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 
-
-
 @inject UserManager<BlogUser> userManager
 @inject IImageService imageService
 
@@ -27,31 +25,35 @@
             <div class="card border-dark">
                 <div class="card-body text-center">
                     <div class="bg-warning">
-                        <hr class="card-hr" />
+                        <hr class="card-hr"/>
                         <h5 class="card-title">@post.Title</h5>
-                        <hr class="card-hr" />
+                        <hr class="card-hr"/>
                     </div>
                     <div>
                         <p class="card-text">@post.Abstract</p>
                     </div>
 
-                    <br />
+                    <br/>
                     <div class="text-center">
                         <a class="btn btn-dark btn-sm btn-block mb-2" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">Read More</a>
                     </div>
 
-                    @if (User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor)
-                    {
-                        <div class="text-center">
-                            <a class="btn btn-success btn-sm btn-block border-dark" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit Post</a>
-                        </div>
-                    }
+
                 </div>
-                <img class="card-img-bottom" src="@imageService.DecodeImage(post.ImageData,  post.ContentType)" />
+                <img class="card-img-bottom" src="@imageService.DecodeImage(post.ImageData, post.ContentType)"/>
             </div>
 
         </div>
+        @if (User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor)
+        {
+            <div class="text-center">
+                <a class="btn btn-success btn-sm btn-block border-dark" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit Post</a>
+            </div>
+        }
     }
+    <div class="center">
+        <a class="btn btn-success btn-sm btn-block border-dark" asp-action="Create" asp-controller="Posts">Create Post</a>
+    </div>
 </div>
 
 <hr />
