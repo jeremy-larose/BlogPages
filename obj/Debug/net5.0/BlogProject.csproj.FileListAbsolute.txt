@@ -522,3 +522,5 @@ C:\Users\Jeremy\source\repos\BlogProject\bin\Debug\net5.0\X.PagedList.Web.Common
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\BlogPostIndex.cshtml.g.cs
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\SearchIndex.cshtml.g.cs
 C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Comments\Moderate.cshtml.g.cs
+C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Home\OldIndex.cshtml.g.cs
+C:\Users\Jeremy\source\repos\BlogProject\obj\Debug\net5.0\Razor\Views\Posts\DetailsOld.cshtml.g.cs

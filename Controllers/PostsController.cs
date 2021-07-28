@@ -9,6 +9,7 @@ using BlogProject.Data;
 using BlogProject.Enums;
 using BlogProject.Models;
 using BlogProject.Services;
+using BlogProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using X.PagedList;
@@ -73,30 +74,34 @@ namespace BlogProject.Controllers
 
             return View( await posts.ToPagedListAsync( pageNumber, ItemsPerPage ));
         }
-        
+
         public async Task<IActionResult> Details(string slug)
         {
-            if (string.IsNullOrEmpty(slug))
-            {
-                return NotFound();
-            }
+            ViewData["Title"] = "Post Details Page";
+            if (string.IsNullOrEmpty(slug)) return NotFound();
 
             var post = await _context.Posts
-                .Include(p => p.Blog)
                 .Include(p => p.BlogUser)
                 .Include(p => p.Tags)
-                .Include( p=> p.Comments )
-                .ThenInclude( c=> c.BlogUser)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.BlogUser)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Moderator)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
 
-            if (post == null)
-            {
-                return NotFound();
-            }
+            if (post == null) return NotFound();
 
-            return View(post);
+            var dataVM = new PostDetailViewModel
+            {
+                Post = post,
+                Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList()
+            };
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["SubText"] = post.Abstract;
+            return View(dataVM);
         }
-        
         // GET: Posts/Create
         public IActionResult Create()
         {
