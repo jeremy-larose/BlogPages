@@ -19,44 +19,45 @@
 }
 <body>
 <!-- Main post-->
-<section class="bg-white pb-5">
-    <div class="container-fluid px-0 pnb-4">
-        <div class="row align-items-center">
-            <div class="col-lg-12">
-                <div class="post-thumnail" style="max-height: 400px; overflow: hidden">
-                    <img class="img-fluid w-100" src="@_imageService.DecodeImage(firstBlog.ImageData, firstBlog.ContentType)" alt="">
+@if (firstBlog is not null)
+{
+    <section class="bg-white pb-5">
+        <div class="container-fluid px-0 pnb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <div class="post-thumnail" style="max-height: 400px; overflow: hidden">
+                        <img class="img-fluid w-100" src="@_imageService.DecodeImage(firstBlog.ImageData, firstBlog.ContentType)" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 mx-auto text-center">
+                    <ul class="list-inline">
+                        <li class="list-inline-item mr-3">
+                            @if (firstBlog.Posts.FirstOrDefault() is not null)
+                            {
+                                var firstTag = firstBlog.Posts.FirstOrDefault().Tags.FirstOrDefault().Text.ToLower();
+
+                                <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">#@firstTag</a>
+                            }
+                        </li>
+                        <li class="list-inline-item mx-3">
+                            <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.BlogUser.FullName</a>
+                        </li>
+                        <li class="list-inline-item mx-3">
+                            <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.Created.ToString("MMM dd, yyyy")</a>
+                        </li>
+                    </ul>
+                    <h1 class="mb-4">
+                        <a class="d-block reset-anchor" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">@firstBlog.Name</a>
+                    </h1>
+                    @firstBlog.Description
+                    <a class="btn btn-link p-0 read-more-btn" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">
+                        <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-6 mx-auto text-center">
-                <ul class="list-inline">
-                    <li class="list-inline-item mr-3">
-                        @if (firstBlog.Posts.FirstOrDefault() is not null)
-                        {
-                            var firstTag = firstBlog.Posts.FirstOrDefault().Tags.FirstOrDefault().Text.ToLower();
-
-                            <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">#@firstTag</a>
-                        }
-                    </li>
-                    <li class="list-inline-item mx-3">
-                        <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.BlogUser.FullName</a>
-                    </li>
-                    <li class="list-inline-item mx-3">
-                        <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.Created.ToString("MMM dd, yyyy")</a>
-                    </li>
-                </ul>
-                <h1 class="mb-4">
-                    <a class="d-block reset-anchor" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">@firstBlog.Name</a>
-                </h1>
-                @firstBlog.Description
-                <a class="btn btn-link p-0 read-more-btn" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">
-                    <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
-                </a>
-
-            </div>
         </div>
-    </div>
-</section>
-
+    </section>
+}
 <!-- Top categories-->
 <section class="pb-5">
     <div class="container pb-4">
@@ -127,9 +128,16 @@
                                 <a class="d-block reset-anchor" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">@blog.Name</a>
                             </h2>
                             <p class="text-muted">@blog.Description</p>
+                            @if (User.IsInRole(BlogRole.Administrator.ToString()))
+                            {
+                                <div class="text-center">
+                                    <a class="btn btn-success btn-block border-dark" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">Edit Blog</a>
+                                </div>
+                            }
                             <a class="btn btn-link p-0 read-more-btn" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id">
                                 <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
                             </a>
+
                         </div>
                     }
                 </div>

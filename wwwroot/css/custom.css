@@ -172,95 +172,6 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div {
     border-radius: 10px;
 }
 
-/* Card Flipping */
-.image-flip:hover .backside, .image-flip.hover .backside {
-    -webkit-transform: rotateY(0deg);
-    -moz-transform: rotateY(0deg);
-    -o-transform: rotateY(0deg);
-    -ms-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-}
-
-.image-flip:hover .frontside, .image-flip.hover .frontside {
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    -o-transform: rotateY(180deg);
-    transform: rotateY(180deg);
-}
-
-.image-flip {
-    margin-bottom:200px;
-    width: 300px;
-    height: 250px;
-}
-
-.mainflip {
-    -webkit-transition: 1s;
-    -webkit-transform-style: preserve-3d;
-    -ms-transition: 1s;
-    -moz-transition: 1s;
-    -moz-transform: perspective(1000px);
-    -moz-transform-style: preserve-3d;
-    -ms-transform-style: preserve-3d;
-    transition: 1s;
-    transform-style: preserve-3d;
-    position: relative;
-}
-
-.frontside, .backside {
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-transition: 1s;
-    -webkit-transform-style: preserve-3d;
-    -moz-transition: 1s;
-    -moz-transform-style: preserve-3d;
-    -o-transition: 1s;
-    -o-transform-style: preserve-3d;
-    -ms-transition: 1s;
-    -ms-transform-style: preserve-3d;
-    transition: 1s;
-    transform-style: preserve-3d;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.frontside {
-    -webkit-transform: rotateY(0deg);
-    -ms-transform: rotateY(0deg);
-    z-index: 2;
-}
-
-.backside {
-    background: white;
-    -webkit-transform: rotateY(-180deg);
-    -moz-transform: rotateY(-180deg);
-    -o-transform: rotateY(-180deg);
-    -ms-transform: rotateY(-180deg);
-    transform: rotateY(-180deg);
-}
-
-.card, .card-img-top {
-    border-radius: 0;
-}
-
-.card-title {
-    text-align: center;
-}
-
-.card-subtitle {
-    text-decoration: #fac7d7;
-    text-align: center;
-    font-style: italic;
-}
-
-.card-date {
-    text-decoration: #fac7d7;
-    font-style: italic;
-}
-
 .div.container3 {
     height: 10em;
     position: relative;
@@ -286,3 +197,12 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div {
 .text-shadow-1 { text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .25); }
 .text-shadow-2 { text-shadow: 0 .25rem .5rem rgba(0, 0, 0, .25); }
 .text-shadow-3 { text-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .25); }
+
+.read-more {
+    padding: 0.3rem 1rem;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 200;
+    text-shadow: .25px .25px #000000;
+
+}

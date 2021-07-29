@@ -108,6 +108,8 @@ namespace BlogProject.Controllers
             ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
             ViewData["MainText"] = post.Title;
             ViewData["SubText"] = post.Abstract;
+            ViewData["Author"] = post.BlogUser.FullName;
+            ViewData["Created"] = post.Created.ToString("MMM dd,yyyy");
             return View(dataViewModel);
         }
         // GET: Posts/Create

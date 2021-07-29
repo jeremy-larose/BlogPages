@@ -45,12 +45,12 @@ namespace BlogProject.Services
 
             var adminUser = new BlogUser
             {
-                FirstName = "Jeremy",
-                LastName = "Tesla",
-                DisplayName = "The Programmer",
-                Email = "JeremyTesla@mailinator.com",
-                UserName = "JeremyTesla@mailinator.com",
-                PhoneNumber = "(989) 555-5555",
+                FirstName = "Team",
+                LastName = "Maxirose",
+                DisplayName = "The Team",
+                Email = "maxirose@mailinator.com",
+                UserName = "maxirose@mailinator.com",
+                PhoneNumber = "(555) 555-5555",
                 EmailConfirmed = true
             };
 
@@ -60,10 +60,10 @@ namespace BlogProject.Services
             var modUser = new BlogUser
             {
                 FirstName = "Macey",
-                LastName = "Tesla",
-                DisplayName = "The Wife",
-                Email = "Maceyesla@mailinator.com",
-                UserName = "MaceyTesla@mailinator.com",
+                LastName = "LaRose",
+                DisplayName = "The Owner",
+                Email = "Maceylarose@mailinator.com",
+                UserName = "Maceylarose@mailinator.com",
                 PhoneNumber = "(989) 777-7777",
                 EmailConfirmed = true
             };

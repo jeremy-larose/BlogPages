@@ -8,103 +8,115 @@
 @inject UserManager<BlogUser> userManager
 @model PostDetailViewModel
 
-<header class="masthead" style="background-image: url(@ViewData["HeaderIamge"])">
-    <div class="overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-10 mx-auto">
-                <div class="site-heading">
+<article>
+    <section class="py-5">
+        <div class="container py-4">
+            <div class="row text-center">
+                <div class="col-lg-8 mx-auto">
+                    @{
+                        foreach (var tag in Model.Tags)
+                        {
+                            <a class="category-link mb-3 d-inline-block" href="#">@tag</a>
+                        }
+                    }
                     <h1>@ViewData["MainText"]</h1>
-                    <span class="subheading">@ViewData["SubText"]</span>
+                    <p>@ViewData["SubText"]</p>
+                    <ul class="list-inline mb-5">
+                        <li class="list-inline-item mx-2">
+                            <a class="text-uppercase text-muted reset-anchor" href="#">By @ViewData["Author"]</a>
+                        </li>
+                        <li class="list-inline-item mx-2">
+                            <a class="text-uppercase text-muted reset-anchor" href="#">@ViewData["Created"]</a>
+                        </li>
+                    </ul>
+                </div>
+            </div><img class="w-100 mb-5 img-fluid" style="max-height: 600px; object-fit: cover;" src="@ViewData["HeaderImage"]" alt="...">
+            <div class="row">
+                <div class="col-lg-9">
+                    <p class="lead drop-caps mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
+                    <h2>Heading level two</h2>
+                    <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <a class="d-block" href="img/post-demo-1.jpg" data-lightbox="post-images" title="Image one">
+                                <img class="img-fluid img-thumbnail" src="img/post-demo-1.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <a class="d-block" href="img/post-demo-2.jpg" data-lightbox="post-images" title="Image two">
+                                <img class="img-fluid img-thumbnail" src="img/post-demo-2.jpg" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <h3>Heading level three</h3>
+                    <ul class="list-bullets mb-5">
+                        <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                        <li>Inventore magni sed error dignissimos repudiandae.</li>
+                        <li>Aperiam cum, nisi sed aliquam soluta amet molestiae.</li>
+                        <li>Consequatur sequi dolore, doloribus officia Nihil fugit.</li>
+                    </ul>
+                    <blockquote class="blockquote bg-light p-4 p-lg-5 text-center mb-5">
+                        <p class="h4 mb-4">Design is the fundamental soul of a human-made creation that ends up expressing itself in successive outer layers of the product or service.</p>
+                        <footer class="blockquote-footer">
+                            <cite title="Source Title">Steve Jobs</cite>
+                        </footer>
+                    </blockquote>
+                    <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+                    <!-- Post tags-->
+                    <div class="d-flex align-items-center flex-column flex-sm-row mb-4 p-4 bg-light">
+                        <h3 class="h4 mb-3 mb-sm-0">Tags</h3>
+                        <ul class="list-inline mb-0 ml-0 ml-sm-3">
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <li class="list-inline-item my-1 mr-2">
+                                    <a class="sidebar-tag-link" href="#">@tag</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- Post share-->
+                    <div class="d-flex align-items-center flex-column flex-sm-row mb-5 p-4 bg-light">
+                        <h3 class="h4 mb-3 mb-sm-0">Share this post</h3>
+                        <ul class="list-inline mb-0 ml-0 ml-sm-3">
+                            <li class="list-inline-item mr-1 my-1">
+                                <a class="social-link-share facebook" href="#"><i class="fab fa-facebook-f mr-2"></i>Share</a>
+                            </li>
+                            <li class="list-inline-item mr-1 my-1">
+                                <a class="social-link-share twitter" href="#"><i class="fab fa-twitter mr-2"></i>Tweet</a>
+                            </li>
+                            <li class="list-inline-item mr-1 my-1">
+                                <a class="social-link-share instagram" href="#"><i class="fab fa-instagram mr-2"></i>Share</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Leave comment-->
+                    <h3 class="h4 mb-4">Leave a comment</h3>
+                    <form class="mb-5" action="#">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <input class="form-control" type="text" name="name" placeholder="Full Name e.g. Jason Doe">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <input class="form-control" type="email" name="email" placeholder="Email Address e.g. Jason@email.com">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <textarea class="form-control" name="message" rows="5" placeholder="Leave your message"></textarea>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <button class="btn btn-primary" type="submit">Submit your comment</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-</header>
-
-<article>  
-        <section class="py-5">
-            <div class="container py-4">
-                <div class="row text-center">
-                    <div class="col-lg-8 mx-auto"><a class="category-link mb-3 d-inline-block" href="#">Inspiration</a>
-                        <h1>Incredible Graffiti Art Spotted in East Village</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis aliquid.</p>
-                        <ul class="list-inline mb-5">
-                            <li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">BY Sam Smith</a></li>
-                            <li class="list-inline-item mx-2"><a class="text-uppercase text-muted reset-anchor" href="#">12 Sep 2020</a></li>
-                        </ul>
-                    </div>
-                </div><img class="w-100 mb-5" src="img/post-single-img.jpg" alt="...">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <p class="lead drop-caps mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.</p>
-                        <h2>Heading level two</h2>
-                        <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <div class="row">
-                            <div class="col-lg-6 mb-4"><a class="d-block" href="img/post-demo-1.jpg" data-lightbox="post-images" title="Image one"><img class="img-fluid img-thumbnail" src="img/post-demo-1.jpg" alt=""></a></div>
-                            <div class="col-lg-6 mb-4"><a class="d-block" href="img/post-demo-2.jpg" data-lightbox="post-images" title="Image two"><img class="img-fluid img-thumbnail" src="img/post-demo-2.jpg" alt=""></a></div>
-                        </div>
-                        <p class="text-muted mb-4">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <h3>Heading level three</h3>
-                        <ul class="list-bullets mb-5">
-                            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
-                            <li>Inventore magni sed error dignissimos repudiandae.</li>
-                            <li>Aperiam cum, nisi sed aliquam soluta amet molestiae.</li>
-                            <li>Consequatur sequi dolore, doloribus officia Nihil fugit.</li>
-                        </ul>
-                        <blockquote class="blockquote bg-light p-4 p-lg-5 text-center mb-5">
-                            <p class="h4 mb-4">Design is the fundamental soul of a human-made creation that ends up expressing itself in successive outer layers of the product or service.</p>
-                            <footer class="blockquote-footer">
-                                <cite title="Source Title">Steve Jobs</cite>
-                            </footer>
-                        </blockquote>
-                        <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
-                        <!-- Post tags-->
-                        <div class="d-flex align-items-center flex-column flex-sm-row mb-4 p-4 bg-light">
-                            <h3 class="h4 mb-3 mb-sm-0">Tags</h3>
-                            <ul class="list-inline mb-0 ml-0 ml-sm-3">
-                                <li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Art</a></li>
-                                <li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Events</a></li>
-                                <li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Make up</a></li>
-                                <li class="list-inline-item my-1 mr-2"><a class="sidebar-tag-link" href="#">Design</a></li>
-                            </ul>
-                        </div>
-                        <!-- Post share-->
-                        <div class="d-flex align-items-center flex-column flex-sm-row mb-5 p-4 bg-light">
-                            <h3 class="h4 mb-3 mb-sm-0">Share this post</h3>
-                            <ul class="list-inline mb-0 ml-0 ml-sm-3">
-                                <li class="list-inline-item mr-1 my-1"><a class="social-link-share facebook" href="#"><i class="fab fa-facebook-f mr-2"></i>Share</a></li>
-                                <li class="list-inline-item mr-1 my-1"><a class="social-link-share twitter" href="#"><i class="fab fa-twitter mr-2"></i>Tweet</a></li>
-                                <li class="list-inline-item mr-1 my-1"><a class="social-link-share instagram" href="#"><i class="fab fa-instagram mr-2"></i>Share</a></li>
-                            </ul>
-                        </div>
-                        <!-- Leave comment-->
-                        <h3 class="h4 mb-4">Leave a comment</h3>
-                        <form class="mb-5" action="#">
-                            <div class="row">
-                                <div class="form-group col-lg-6">
-                                    <input class="form-control" type="text" name="name" placeholder="Full Name e.g. Jason Doe">
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <input class="form-control" type="email" name="email" placeholder="Email Address e.g. Jason@email.com">
-                                </div>
-                                <div class="form-group col-lg-12">
-                                    <textarea class="form-control" name="message" rows="5" placeholder="Leave your message"></textarea>
-                                </div>
-                                <div class="form-group col-lg-12">
-                                    <button class="btn btn-primary" type="submit">Submit your comment</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+    </section>
     <div class="row">
         <div class="col-9 border-right">
             @Html.Raw(Model.Post.Content)
         </div>
-        <div class="col-3 text-center font-weight-bold h6" >
+        <div class="col-3 text-center font-weight-bold h6">
             <div class="card">
                 <img class="card-img-top" src="/images/tags.png" alt="Tags...">
                 <div class="card-body">
@@ -119,11 +131,11 @@
             </div>
         </div>
     </div>
-  
+
 </article>
 
 <article>
-    <hr />
+    <hr/>
     <h3 class="text-center font-weight-bold">Tags</h3>
     <div class="col text-center">
         @foreach (var tag in Model.Post.Tags.ToList())
@@ -131,13 +143,13 @@
             <a asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()" class="mb-1 btn btn-sm btn-warning btn-outline-dark">#@tag.Text</a>
         }
     </div>
-    <hr />
+    <hr/>
 </article>
 
 
 <div>
-    @if (User.Identity.IsAuthenticated)
-    {
+@if (User.Identity.IsAuthenticated)
+{
     <form asp-action="Create" asp-controller="Comments" method="post">
         @Html.Hidden("PostId", Model.Post.Id)
         @Html.Hidden("Slug", Model.Post.Slug)
@@ -149,205 +161,205 @@
 
         <button type="submit" class="btn btn-dark btn-block btn-sm">Submit</button>
     </form>
-    }
-    else
-    {
-        <a class="btn btn-block btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
-            Login to add comments
-        </a>
-    }
+}
+else
+{
+    <a class="btn btn-block btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
+        Login to add comments
+    </a>
+}
 
-    <br />
-    <hr class="card-hr" />
-    <br />
+<br/>
+<hr class="card-hr"/>
+<br/>
 
-    <a id="commentSection" class="btn btn-sm btn-dark btn-block mb-2">@Model.Post.Comments.Count COMMENT(S)</a>
+<a id="commentSection" class="btn btn-sm btn-dark btn-block mb-2">@Model.Post.Comments.Count COMMENT(S)</a>
 
-    @foreach (var comment in Model.Post.Comments.OrderByDescending(c => c.Created))
-    {
-        <div class="media p-3 mb-2 bg-cf media-border">
-            <img src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" alt="@comment.BlogUser.FullName" class="mr-3 mt-3 rounded-pill img-thumbnail " style="width:60px;">
-            
-            <div class="media-body">
-                <h4>@comment.BlogUser.FullName</h4>
-             
-                @****************************************************************
+@foreach (var comment in Model.Post.Comments.OrderByDescending(c => c.Created))
+{
+    <div class="media p-3 mb-2 bg-cf media-border">
+        <img src="@imageService.DecodeImage(comment.BlogUser.ImageData, comment.BlogUser.ContentType)" alt="@comment.BlogUser.FullName" class="mr-3 mt-3 rounded-pill img-thumbnail " style="width:60px;">
+
+        <div class="media-body">
+            <h4>@comment.BlogUser.FullName</h4>
+
+            @****************************************************************
                 SECTION 1: POST ON OR UPDATED ON               
                 *****************************************************************@
-                @if(comment.Deleted is not null)
-                {
-                    <span class="small">                                                       
-                        <span class="font-weight-bolder">Deleted</span> : @comment.Deleted?.ToString("MMM dd, yyyy")
-                    </span>                    
-                }
-                else if(comment.Moderated is not null)
-                {
-                    <span class="small">
-                        <span class="font-weight-bolder">
-                            Moderated <span class="text-danger font-italic">(@comment.ModerationType.ToString().ToLower())</span>                   
-                        </span>                       
-                        : @comment.Moderated?.ToString("MMM dd, yyyy")                                                           
-                    </span>                   
-                 }
-                else if(comment.Updated is not null)
-                {
-                    <span class="small">
-                        <span class="font-weight-bolder">Updated </span> : @comment.Updated?.ToString("MMM dd, yyyy")
-                    </span>        
-                }
-                else
-                {
-                    <span class="small">
-                        <span class="font-weight-bolder">Created </span> : @comment.Created.ToString("MMM dd, yyyy")
-                    </span>                      
-                }                                             
+            @if (comment.Deleted is not null)
+            {
+                <span class="small">
+                    <span class="font-weight-bolder">Deleted</span> : @comment.Deleted?.ToString("MMM dd, yyyy")
+                </span>
+            }
+            else if (comment.Moderated is not null)
+            {
+                <span class="small">
+                    <span class="font-weight-bolder">
+                        Moderated <span class="text-danger font-italic">(@comment.ModerationType.ToString().ToLower())</span>
+                    </span>
+                    : @comment.Moderated?.ToString("MMM dd, yyyy")
+                </span>
+            }
+            else if (comment.Updated is not null)
+            {
+                <span class="small">
+                    <span class="font-weight-bolder">Updated </span> : @comment.Updated?.ToString("MMM dd, yyyy")
+                </span>
+            }
+            else
+            {
+                <span class="small">
+                    <span class="font-weight-bolder">Created </span> : @comment.Created.ToString("MMM dd, yyyy")
+                </span>
+            }
 
-                @*****************************************************************
+            @*****************************************************************
                 SECTION 2: HOW DO WE COMPOSE THE BODY                       
-                *****************************************************************@     
-                @*****************************************************************
+                *****************************************************************@
+            @*****************************************************************
                 SECTION 2A: Render pre text                       
-                *****************************************************************@                     
-                <br />
-                @if(comment.Deleted is not null)
-                {
-                    <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName was deleted by the Moderator...</span>
-                }
-                else if(comment.Moderated is not null)
-                {
-                    <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName has been Moderated...</span>                      
-                }
+                *****************************************************************@
+            <br/>
+            @if (comment.Deleted is not null)
+            {
+                <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName was deleted by the Moderator...</span>
+            }
+            else if (comment.Moderated is not null)
+            {
+                <span class="small font-italic">The comment posted on @comment.Created.ToString("MMM dd, yyyy") by @comment.BlogUser.FullName has been Moderated...</span>
+            }
 
-                <hr />
+            <hr/>
 
-                 @*****************************************************************
+            @*****************************************************************
                 SECTION 2B: Render main body                       
-                *****************************************************************@                      
-                @if(string.IsNullOrEmpty(comment.Body))
-                {
-                    <span class="small font-italic">Comment not available...</span>
-                }
-                else if(comment.Moderated is not null)
-                {
-                    @comment.ModeratedBody
-                }
-                else if(comment.Deleted is null)
-                {
-                    @comment.Body
-                }
+                *****************************************************************@
+            @if (string.IsNullOrEmpty(comment.Body))
+            {
+                <span class="small font-italic">Comment not available...</span>
+            }
+            else if (comment.Moderated is not null)
+            {
+                @comment.ModeratedBody
+            }
+            else if (comment.Deleted is null)
+            {
+                @comment.Body
+            }
 
 
-                @****************************************************************
+            @****************************************************************
                     SECTION 3: CAN WE RENDER THE EDIT BUTTON           
                 *****************************************************************@
-                @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
-                {
-                    <hr>
-                    <button data-toggle="modal" data-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
-                }
-  
-                @****************************************************************
+            @if (comment.Moderated is null && comment.Deleted is null && comment.BlogUserId == userManager.GetUserId(User))
+            {
+                <hr>
+                <button data-toggle="modal" data-target="#editModal" class="btn-sm btn-dark float-right font-weight-bold">EDIT</button>
+            }
+
+            @****************************************************************
                 SECTION 4: CAN WE RENDER THE MODERATE AND DELETE BUTTONS              
                 *****************************************************************@
-                @if (User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null)
-                {
-                    <hr>
-                    <div class="row">                          
-                        <div class="col-2">
-                            <button  class="btn-sm btn-dark font-weight-bold btn-block" data-toggle="modal" data-target="#moderate">MODERATE</button>                                                   
-                        </div>
-                            <div class="col-2">
-                            <form asp-action="Delete" asp-controller="Comments">
-                                @Html.Hidden("CommentId", comment.Id)
-                                @Html.Hidden("Slug", comment.Post.Slug)
-                                <button  class="btn-sm btn-dark font-weight-bold btn-block">DELETE</button>
-                            </form>
-                        </div>
-                    </div>                  
-                }
-                                       
-            </div>
+            @if (User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null)
+            {
+                <hr>
+                <div class="row">
+                    <div class="col-2">
+                        <button class="btn-sm btn-dark font-weight-bold btn-block" data-toggle="modal" data-target="#moderate">MODERATE</button>
+                    </div>
+                    <div class="col-2">
+                        <form asp-action="Delete" asp-controller="Comments">
+                            @Html.Hidden("CommentId", comment.Id)
+                            @Html.Hidden("Slug", comment.Post.Slug)
+                            <button class="btn-sm btn-dark font-weight-bold btn-block">DELETE</button>
+                        </form>
+                    </div>
+                </div>
+            }
 
         </div>
+
+    </div>
 
 
         @*Modals*@
-        <div class="modal" id="editModal">
-            <div class="modal-dialog">
-                <div class="modal-content">          
-                    <div class="modal-header">
-                        <h4 class="modal-title">Editing Comment...</h4>
-                                   
-                    </div>
+    <div class="modal" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editing Comment...</h4>
 
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <form asp-action="Edit" asp-controller="Comments">
-                            @Html.Hidden("Id", comment.Id)
-                                      
-                            <div class="form-group">
-                                <textarea name="Body" class="form-control" required>@comment.Body</textarea>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form asp-action="Edit" asp-controller="Comments">
+                        @Html.Hidden("Id", comment.Id)
+
+                        <div class="form-group">
+                            <textarea name="Body" class="form-control" required>@comment.Body</textarea>
+                        </div>
+
+                        <button class="btn-sm btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
+                    </form>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn-sm btn-dark font-weight-bold" data-dismiss="modal">CLOSE</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="moderate">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Moderating Comment...</h4>
+
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form asp-action="Moderate" asp-controller="Comments">
+                        @Html.Hidden("Id", comment.Id)
+                        @Html.Hidden("Body", comment.Body)
+
+                        <div class="form-group">
+                            <label class="control-label">Original Comment</label>
+                            <textarea disabled class="form-control" style="resize:none">@comment.Body</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Moderated Comment</label>
+                            <textarea required name="ModeratedBody" class="form-control">@comment.ModeratedBody</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Reason For Moderation</label>
+                            <select class="form-control" asp-for="@comment.ModerationType" name="ModerationType" asp-items="Html.GetEnumSelectList<ModerationType>()"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn-sm btn-block btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn-sm btn-block btn-dark font-weight-bold" type="button" data-dismiss="modal">CLOSE</button>
+                                </div>
                             </div>
-                                       
-                            <button class="btn-sm btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>
-                        </form>
-                    </div>
+                        </div>
 
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn-sm btn-dark font-weight-bold" data-dismiss="modal">CLOSE</button>
-                    </div>
-
+                    </form>
                 </div>
             </div>
         </div>
-               
-        <div class="modal" id="moderate">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Moderating Comment...</h4>
-                                        
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <form asp-action="Moderate" asp-controller="Comments">
-                            @Html.Hidden("Id", comment.Id)
-                            @Html.Hidden("Body", comment.Body)
-
-                            <div class="form-group">
-                                <label class="control-label">Original Comment</label>
-                                <textarea disabled class="form-control" style="resize:none">@comment.Body</textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Moderated Comment</label>
-                                <textarea required name="ModeratedBody" class="form-control">@comment.ModeratedBody</textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label">Reason For Moderation</label>
-                                <select class="form-control" asp-for="@comment.ModerationType" name="ModerationType" asp-items="Html.GetEnumSelectList<ModerationType>()"></select>
-                            </div>
-
-                             <div class="form-group">
-                                 <div class="row">
-                                     <div class="col">
-                                        <button class="btn-sm btn-block btn-dark border-success font-weight-bold" type="submit">SUBMIT</button>                                         
-                                     </div>
-                                     <div class="col">
-                                        <button class="btn-sm btn-block btn-dark font-weight-bold" type="button" data-dismiss="modal">CLOSE</button>                                         
-                                     </div>                                     
-                                 </div>
-                             </div>
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+    </div>
+}
 </div>

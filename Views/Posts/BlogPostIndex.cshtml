@@ -14,9 +14,8 @@
     var firstBlog = Model.Blog.FirstOrDefault();
 }
 <!------------------ Blog Post Index  --------------------
-- Contains the index of posts when clicked from home page. 
+- Contains the index of posts when clicked from home page.
 --------------------------------------------------------->
-
 <!-- Render the initial blog post first -->
 @if (firstBlog is not null)
 {
@@ -50,13 +49,18 @@
 }
 <section class="pb-5">
     <div class="container px-4 py-5">
-            <div class="center">
-                <a class="btn btn-success btn-block border-dark" asp-action="Create" asp-controller="Posts">Create New Post</a>
-            </div>
+        <div class="center">
+            <a class="btn btn-success btn-block border-dark" asp-action="Create" asp-controller="Posts">Create New Post</a>
+        </div>
         <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
 
             @foreach (var post in Model.Posts)
             {
+                var isAuthor = false;
+                if (User.Identity.IsAuthenticated)
+                {
+                    isAuthor = (post.BlogUserId == userManager.GetUserId(User));
+                }
                 <div class="col">
                     <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url(@_imageService.DecodeImage(post.ImageData, post.ContentType)">
                         <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
@@ -76,11 +80,17 @@
                                 <a class="text-uppercase meta-link font-weight-normal" href="#">@post.Created.ToString("MMM dd, yyyy")</a>
                             </li>
                         </ul>
-                        <p class="text-white text-shadow-1 font-weight-bolder" style="text-shadow: 1px 1px #000000; text-align: center;">@post.Abstract</p>
+                        <p class="text-white text-shadow-1 font-weight-bolder" style="text-shadow: #000000; text-align: center;">@post.Abstract</p>
                         <a class="btn btn-link p-0 read-more-btn" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">
-                            <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="read-more">Read more</span><i class="fas fa-long-arrow-alt-right"></i>
                         </a>
                     </div>
+                    @if (User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor)
+                    {
+                        <div class="text-center">
+                            <a class="btn btn-success btn-block border-dark" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit Post</a>
+                        </div>
+                    }
                 </div>
             }
         </div>
@@ -92,11 +102,11 @@
         <div class="row">
             <div class="col">
                 @Html.PagedListPager(Model.Posts, page => Url.Action("BlogPostIndex", new {id = Model.Posts.FirstOrDefault().BlogId, page = page}),
-                    new PagedListRenderOptions
-                    {
-                        LiElementClasses = new string[] {"page-item"},
-                        PageClasses = new string[] {"page-link"}
-                    })
+                new PagedListRenderOptions
+                {
+                LiElementClasses = new string[] {"page-item"},
+                PageClasses = new string[] {"page-link"}
+                })
             </div>
         </div>
     </div>
@@ -116,22 +126,22 @@
             <div class="card border-dark">
                 <div class="card-body text-center">
                     <div class="bg-warning">
-                        <hr class="card-hr"/>
+                        <hr class="card-hr" />
                         <h5 class="card-title">@post.Title</h5>
-                        <hr class="card-hr"/>
+                        <hr class="card-hr" />
                     </div>
                     <div>
                         <p class="card-text">@post.Abstract</p>
                     </div>
 
-                    <br/>
+                    <br />
                     <div class="text-center">
                         <a class="btn btn-dark btn-sm btn-block mb-2" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">Read More</a>
                     </div>
 
 
                 </div>
-                <img class="card-img-bottom" src="@_imageService.DecodeImage(post.ImageData, post.ContentType)"/>
+                <img class="card-img-bottom" src="@_imageService.DecodeImage(post.ImageData, post.ContentType)" />
             </div>
 
         </div>
@@ -145,5 +155,5 @@
 
 </div>
 
-<hr/>
+<hr />
 
