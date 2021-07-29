@@ -91,7 +91,7 @@ namespace BlogProject.Controllers
 
             if (post == null) return NotFound();
 
-            var dataVM = new PostDetailViewModel
+            var dataViewModel = new PostDetailViewModel
             {
                 Post = post,
                 Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList()
@@ -100,7 +100,7 @@ namespace BlogProject.Controllers
             ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
             ViewData["MainText"] = post.Title;
             ViewData["SubText"] = post.Abstract;
-            return View(dataVM);
+            return View(dataViewModel);
         }
         // GET: Posts/Create
         public IActionResult Create()

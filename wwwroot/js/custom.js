@@ -50,7 +50,7 @@ $("form").on("submit", function(){
     $("#TagList option").prop("selected", "selected");
 })
 
-// Look for teh tagValues variable to see if it has data
+// Look for the tagValues variable to see if it has data
 if( tagValues != '' ) {
     let tagArray = tagValues.split( "," );
     for( let loop = 0; loop < tagArray.length; loop++ ) {
