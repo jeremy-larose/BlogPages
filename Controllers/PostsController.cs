@@ -41,20 +41,28 @@ namespace BlogProject.Controllers
             var applicationDbContext = _context.Posts.Include(p => p.Blog).Include(p => p.BlogUser);
             return View(await applicationDbContext.ToListAsync());
         }
-        
-        public async Task<IActionResult> BlogPostIndex( int? id, int? page )
+
+        public async Task<IActionResult> BlogPostIndex(int? id, int? page)
         {
             if (id is null)
                 return NotFound();
 
             var pageNumber = page ?? 1;
-            
+/*            
             var posts = await _context.Posts
                 .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady )
                 .OrderByDescending( p=> p.Created )
-                .ToPagedListAsync( pageNumber, ItemsPerPage );
+                .ToPagedListAsync( pageNumber, ItemsPerPage ); */
 
-            return View( posts );
+            var postBlogIndexViewModel = new PostBlogIndexViewModel()
+            {
+                Posts = await _context.Posts
+                    .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
+                    .OrderByDescending(p => p.Created)
+                    .ToPagedListAsync(pageNumber, ItemsPerPage),
+                Blog = _context.Blogs.Where(b => b.Id == id).Include( b=>b.BlogUser )
+            };
+            return View(postBlogIndexViewModel);
         }
 
         public async Task<IActionResult> TagIndex(string tag)

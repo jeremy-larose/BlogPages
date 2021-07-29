@@ -7,12 +7,103 @@
 @using X.PagedList.Web.Common
 
 @inject UserManager<BlogUser> userManager
-@inject IImageService imageService
+@inject IImageService _imageService
 
-@model IPagedList<Post>
+@model BlogProject.ViewModels.PostBlogIndexViewModel
+@{
+    var firstBlog = Model.Blog.FirstOrDefault();
+}
+<!------------------ Blog Post Index  --------------------
+- Contains the index of posts when clicked from home page. 
+--------------------------------------------------------->
+
+<!-- Render the initial blog post first -->
+@if (firstBlog is not null)
+{
+    <section class="bg-white pb-5">
+        <div class="container-fluid px-0 pnb-4">
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <div class="post-thumnail" style="max-height: 400px; background-size: contain; overflow: hidden">
+                        <img class="img-fluid w-100" src="@_imageService.DecodeImage(firstBlog.ImageData, firstBlog.ContentType)" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6 mx-auto text-center">
+                    <ul class="list-inline">
+                        <li class="list-inline-item mr-3">
+                        </li>
+                        <li class="list-inline-item mx-3">
+                            <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.BlogUser.FullName</a>
+                        </li>
+                        <li class="list-inline-item mx-3">
+                            <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.Created.ToString("MMM dd, yyyy")</a>
+                        </li>
+                    </ul>
+                    <h1 class="mb-4">
+                        <a class="d-block reset-anchor" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">@firstBlog.Name</a>
+                    </h1>
+                    @Html.Raw(firstBlog.Description)
+                </div>
+            </div>
+        </div>
+    </section>
+}
+<section class="pb-5">
+    <div class="container px-4 py-5">
+            <div class="center">
+                <a class="btn btn-success btn-block border-dark" asp-action="Create" asp-controller="Posts">Create New Post</a>
+            </div>
+        <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+
+            @foreach (var post in Model.Posts)
+            {
+                <div class="col">
+                    <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url(@_imageService.DecodeImage(post.ImageData, post.ContentType)">
+                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
+                                <a asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">@post.Title</a>
+                            </h2>
+                        </div>
+
+                        <ul class="d-flex list-unstyled mt-auto">
+                            <li class="list-inline-item mx-2">
+                                <a class="category-link font-weight-normal" href="#">Fashion</a>
+                            </li>
+                            <li class="list-inline-item mx-2">
+                                <a class="text-uppercase meta-link font-weight-normal" href="#">@post.BlogUser.FullName</a>
+                            </li>
+                            <li class="list-inline-item mx-2">
+                                <a class="text-uppercase meta-link font-weight-normal" href="#">@post.Created.ToString("MMM dd, yyyy")</a>
+                            </li>
+                        </ul>
+                        <p class="text-white text-shadow-1 font-weight-bolder" style="text-shadow: 1px 1px #000000; text-align: center;">@post.Abstract</p>
+                        <a class="btn btn-link p-0 read-more-btn" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">
+                            <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col h3">
+                Page @(Model.Posts.PageCount < Model.Posts.PageNumber ? 0 : Model.Posts.PageNumber) of @Model.Posts.PageCount
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                @Html.PagedListPager(Model.Posts, page => Url.Action("BlogPostIndex", new {id = Model.Posts.FirstOrDefault().BlogId, page = page}),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] {"page-item"},
+                        PageClasses = new string[] {"page-link"}
+                    })
+            </div>
+        </div>
+    </div>
+</section>
 
 <div class="row">
-    @foreach (var post in Model)
+    @foreach (var post in Model.Posts)
     {
         //Is the logged in user the Author of this post??
         var isAuthor = false;
@@ -40,7 +131,7 @@
 
 
                 </div>
-                <img class="card-img-bottom" src="@imageService.DecodeImage(post.ImageData, post.ContentType)"/>
+                <img class="card-img-bottom" src="@_imageService.DecodeImage(post.ImageData, post.ContentType)"/>
             </div>
 
         </div>
@@ -51,25 +142,8 @@
             </div>
         }
     }
-    <div class="center">
-        <a class="btn btn-success btn-sm btn-block border-dark" asp-action="Create" asp-controller="Posts">Create Post</a>
-    </div>
+
 </div>
 
-<hr />
+<hr/>
 
-<div class="row">
-    <div class="col h3">
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { id = Model.FirstOrDefault().BlogId, page = page }),
-            new PagedListRenderOptions
-            {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" }
-            })
-    </div>
-</div>
