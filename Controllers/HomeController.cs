@@ -32,17 +32,15 @@ namespace BlogProject.Controllers
         {
             var pageNumber = page ?? 1;
 
-            // var blogs = _context.Blogs
-            //     .Where(b => b.Posts.Any(p => p.ReadyStatus == ReadyStatus.ProductionReady))
-            //     .OrderByDescending(b => b.Created)
-            //     .ToPagedListAsync( pageNumber, ItemsPerPage );
+            var dataViewModel = new HomeViewModel
+            {
+                Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList(),
+                Blogs = await _context.Blogs.Include( b=>b.BlogUser)
+                    .OrderByDescending( b=>b.Created).ToPagedListAsync( pageNumber, ItemsPerPage ),
+                Posts = await _context.Posts.OrderByDescending( p=>p.Updated ).ToListAsync()
+            };
             
-            var blogs = _context.Blogs
-                .Include( b=>b.BlogUser )
-                .OrderByDescending(b => b.Created)
-                .ToPagedListAsync( pageNumber, ItemsPerPage );
-
-            return View(await blogs);
+            return View( dataViewModel );
         }
         
         public IActionResult Privacy()

@@ -260,3 +260,14 @@ div.swal2-container.swal2-center.swal2-backdrop-show > div {
     text-decoration: #fac7d7;
     font-style: italic;
 }
+
+.div.container3 {
+    height: 10em;
+    position: relative;
+}
+.div.container3.child {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate( 0, -50% );
+}
