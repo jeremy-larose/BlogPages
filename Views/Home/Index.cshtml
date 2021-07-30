@@ -6,9 +6,11 @@
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
+@using BlogProject.Data
 
 @inject IImageService _imageService
 @inject UserManager<BlogUser> _userManager
+@inject ApplicationDbContext _dbContext;
 
 @model HomeViewModel
 
@@ -16,7 +18,7 @@
     ViewBag.Title = "Maxirose";
     Layout = "_Layout";
     var firstBlog = Model.Blogs.OrderByDescending(b => b.Created).FirstOrDefault();
-    var firstTag = firstBlog.Posts.FirstOrDefault()?.Tags.FirstOrDefault();
+    var firstTag = _dbContext.Tags.First();
 }
 <body>
 <!-- Main post-->
