@@ -16,10 +16,8 @@ namespace BlogProject
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-
             var dataService = host.Services.CreateScope().ServiceProvider.GetRequiredService<DataService>();
             await dataService.ManageDataAsync();
-            
             await host.RunAsync();
         }
 
