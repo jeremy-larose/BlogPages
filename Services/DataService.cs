@@ -96,7 +96,6 @@ namespace BlogProject.Services
                 Abstract = "This is the default blog post.",
                 Content = "This is the content of the default blog post.",
                 Created = DateTime.Now,
-
             };
 
             if (_dbContext.Tags.Any()) return;
@@ -108,6 +107,9 @@ namespace BlogProject.Services
                 Post = defaultPost,
                 Text = "Hair"
             };
+            
+            defaultBlog.Posts.Add( defaultPost );
+            defaultPost.Tags.Add( defaultTag );
             
             await _dbContext.AddAsync(defaultBlog);
             await _dbContext.AddAsync(defaultPost);
