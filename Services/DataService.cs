@@ -14,7 +14,6 @@ namespace BlogProject.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<BlogUser> _userManager;
-        private BlogUser _defaultUser;
 
         public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager)
         {
@@ -28,7 +27,6 @@ namespace BlogProject.Services
             await _dbContext.Database.MigrateAsync();
             await SeedRolesAsync();
             await SeedUsersAsync();
-            await SeedBlogsAsync( _defaultUser );
         }
 
         private async Task SeedRolesAsync()
@@ -56,9 +54,9 @@ namespace BlogProject.Services
                 EmailConfirmed = true
             };
 
+            await SeedBlogsAsync(adminUser);
             await _userManager.CreateAsync(adminUser, "Abc123!");
             await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
-            _defaultUser = adminUser;
 
             var modUser = new BlogUser
             {
@@ -79,26 +77,31 @@ namespace BlogProject.Services
         private async Task SeedBlogsAsync( BlogUser defaultUser )
         {
             if (_dbContext.Blogs.Any()) return;
-            var defaultBlog = new Blog()
+            if( _dbContext.Posts.Any() ) return;
+            if (_dbContext.Tags.Any()) return;
+
+
+            var defaultBlog = new Blog
             {
                 BlogUser = defaultUser,
                 BlogUserId = defaultUser.Id,
                 Created = DateTime.Now,
+                Name = "Default Blog",
                 Description = "The default blog build.",
             };
 
-            if( _dbContext.Posts.Any() ) return;
-            var defaultPost = new Post()
+            var defaultPost = new Post
             {
                 Blog = defaultBlog,
                 BlogUser = defaultUser,
                 BlogUserId = defaultUser.Id,
+                Title = "Default Post",
                 Abstract = "This is the default blog post.",
                 Content = "This is the content of the default blog post.",
                 Created = DateTime.Now,
+                Slug = "default+post"
             };
 
-            if (_dbContext.Tags.Any()) return;
             var defaultTag = new Tag()
             {
                 BlogUser = defaultUser,
