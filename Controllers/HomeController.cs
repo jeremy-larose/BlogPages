@@ -46,7 +46,7 @@ namespace BlogProject.Controllers
             };
             var adminUser = _userManager.Users.FirstOrDefault(u => u.Email == "maxirose@mailinator.com");
 
-            ViewData["UserImage"] = _imageService.DecodeImage(adminUser.ImageData, adminUser.ContentType); 
+            ViewData["UserImage"] = _imageService.DecodeImage(adminUser.ImageData, adminUser.ContentType);
             return View( dataViewModel );
         }
         
