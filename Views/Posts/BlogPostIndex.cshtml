@@ -56,42 +56,45 @@
 
             @foreach (var post in Model.Posts)
             {
-                var isAuthor = false;
-                if (User.Identity.IsAuthenticated)
+                if (post is not null)
                 {
-                    isAuthor = (post.BlogUserId == userManager.GetUserId(User));
-                }
-                <div class="col">
-                    <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url(@_imageService.DecodeImage(post.ImageData, post.ContentType)">
-                        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
-                            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
-                                <a asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">@post.Title</a>
-                            </h2>
-                        </div>
-
-                        <ul class="d-flex list-unstyled mt-auto">
-                            <li class="list-inline-item mx-2">
-                                <a class="category-link font-weight-normal" href="#">Fashion</a>
-                            </li>
-                            <li class="list-inline-item mx-2">
-                                <a class="text-uppercase meta-link font-weight-normal" href="#">@post.BlogUser.FullName</a>
-                            </li>
-                            <li class="list-inline-item mx-2">
-                                <a class="text-uppercase meta-link font-weight-normal" href="#">@post.Created.ToString("MMM dd, yyyy")</a>
-                            </li>
-                        </ul>
-                        <p class="text-white text-shadow-1 font-weight-bolder" style="text-shadow: #000000; text-align: center;">@post.Abstract</p>
-                        <a class="btn btn-link p-0 read-more-btn" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">
-                            <span class="read-more">Read more</span><i class="fas fa-long-arrow-alt-right"></i>
-                        </a>
-                    </div>
-                    @if (User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor)
+                    var isAuthor = false;
+                    if (User.Identity.IsAuthenticated)
                     {
-                        <div class="text-center">
-                            <a class="btn btn-success btn-block border-dark" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit Post</a>
-                        </div>
+                        isAuthor = (post.BlogUserId == userManager.GetUserId(User));
                     }
-                </div>
+                    <div class="col">
+                        <div class="card card-cover h-100 overflow-hidden text-white bg-dark rounded-5 shadow-lg" style="background-image: url(@_imageService.DecodeImage(post.ImageData, post.ContentType)">
+                            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+                                <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">
+                                    <a asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">@post.Title</a>
+                                </h2>
+                            </div>
+
+                            <ul class="d-flex list-unstyled mt-auto">
+                                <li class="list-inline-item mx-2">
+                                    <a class="category-link font-weight-normal" href="#">Fashion</a>
+                                </li>
+                                <li class="list-inline-item mx-2">
+                                    <a class="text-uppercase meta-link font-weight-normal" href="#">@post.BlogUser.FullName</a>
+                                </li>
+                                <li class="list-inline-item mx-2">
+                                    <a class="text-uppercase meta-link font-weight-normal" href="#">@post.Created.ToString("MMM dd, yyyy")</a>
+                                </li>
+                            </ul>
+                            <p class="text-white text-shadow-1 font-weight-bolder" style="text-shadow: #000000; text-align: center;">@post.Abstract</p>
+                            <a class="btn btn-link p-0 read-more-btn" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">
+                                <span class="read-more">Read more</span><i class="fas fa-long-arrow-alt-right"></i>
+                            </a>
+                        </div>
+                        @if (User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor)
+                        {
+                            <div class="text-center">
+                                <a class="btn btn-success btn-block border-dark" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit Post</a>
+                            </div>
+                        }
+                    </div>
+                }
             }
         </div>
         <div class="row">
