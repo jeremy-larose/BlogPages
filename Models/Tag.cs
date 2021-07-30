@@ -6,6 +6,7 @@ namespace BlogProject.Models
     {
         public int Id { get; set; }
         public int PostId { get; set; }
+        public int BlogId { get; set; }
         public string BlogUserId { get; set; }
         
         [Required]
@@ -14,5 +15,6 @@ namespace BlogProject.Models
 
         public virtual Post Post { get; set; }
         public virtual BlogUser BlogUser { get; set; }
+        public virtual Blog Blog { get; set; }
     }
 }

@@ -48,12 +48,6 @@ namespace BlogProject.Controllers
                 return NotFound();
 
             var pageNumber = page ?? 1;
-/*            
-            var posts = await _context.Posts
-                .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady )
-                .OrderByDescending( p=> p.Created )
-                .ToPagedListAsync( pageNumber, ItemsPerPage ); */
-
             var postBlogIndexViewModel = new PostBlogIndexViewModel()
             {
                 Posts = await _context.Posts
@@ -331,14 +325,5 @@ namespace BlogProject.Controllers
         {
             return _context.Posts.Any(e => e.Id == id);
         }
-
-        //    public IActionResult TagIndex( List<string> tagValues )
-        //      {
-//            var post = _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(t => t.Tags == tagValues);
-
-        //return View(post);
-        //var tag = await _context.Posts.Where(p => p.Tags).Contains( );
-        //return View(tag);
-        //}
     }
 }

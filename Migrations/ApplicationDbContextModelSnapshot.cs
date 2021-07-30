@@ -186,6 +186,9 @@ namespace BlogProject.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("BlogId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("BlogUserId")
                         .HasColumnType("text");
 
@@ -198,6 +201,8 @@ namespace BlogProject.Migrations
                         .HasColumnType("character varying(25)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
 
                     b.HasIndex("BlogUserId");
 
@@ -491,6 +496,12 @@ namespace BlogProject.Migrations
 
             modelBuilder.Entity("BlogProject.Models.Tag", b =>
                 {
+                    b.HasOne("BlogProject.Models.Blog", "Blog")
+                        .WithMany("Tags")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BlogProject.Models.BlogUser", "BlogUser")
                         .WithMany()
                         .HasForeignKey("BlogUserId");
@@ -500,6 +511,8 @@ namespace BlogProject.Migrations
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Blog");
 
                     b.Navigation("BlogUser");
 
@@ -560,6 +573,8 @@ namespace BlogProject.Migrations
             modelBuilder.Entity("BlogProject.Models.Blog", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("BlogProject.Models.Post", b =>

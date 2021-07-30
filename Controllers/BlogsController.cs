@@ -65,19 +65,32 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog, List<string> tagValues )
         {
+            var authorId = _userManager.GetUserId(User);
+
             if (ModelState.IsValid)
             {
+                blog.BlogUserId = authorId;
                 blog.Created = DateTime.Now;
-                blog.BlogUserId = _userManager.GetUserId(User);
                 blog.ImageData = await _imageService.EncodeImageAsync(blog.Image);
                 blog.ContentType = _imageService.ContentType(blog.Image);
-
+                
+                foreach (var tagText in tagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        BlogId = blog.Id,
+                        BlogUserId = authorId,
+                        Text = tagText,
+                    });
+                }
+                
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
             ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", blog.BlogUserId);
             return View(blog);
         }
@@ -103,7 +116,7 @@ namespace BlogProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile newImage, List<string> tagValues)
         {
             if (id != blog.Id)
             {
@@ -126,6 +139,20 @@ namespace BlogProject.Controllers
                     if (newImage is not null)
                         newBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
                     
+                    // Remove all tags previously associated with this post
+                    _context.Tags.RemoveRange(newBlog.Tags);
+
+                    // Add in new tags from the edit form
+                    foreach (var tagText in tagValues)
+                    {
+                        _context.Add(new Tag()
+                        {
+                            BlogId = blog.Id,
+                            BlogUserId = newBlog.BlogUserId,
+                            Text = tagText,
+                        });
+                    }
+                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -141,6 +168,7 @@ namespace BlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
             ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", blog.BlogUserId);
             return View(blog);
         }

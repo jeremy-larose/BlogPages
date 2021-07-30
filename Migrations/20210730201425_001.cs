@@ -273,6 +273,7 @@ namespace BlogProject.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PostId = table.Column<int>(type: "integer", nullable: false),
+                    BlogId = table.Column<int>(type: "integer", nullable: false),
                     BlogUserId = table.Column<string>(type: "text", nullable: true),
                     Text = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false)
                 },
@@ -285,6 +286,12 @@ namespace BlogProject.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Tags_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tags_Posts_PostId",
                         column: x => x.PostId,
@@ -359,6 +366,11 @@ namespace BlogProject.Migrations
                 name: "IX_Posts_BlogUserId",
                 table: "Posts",
                 column: "BlogUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tags_BlogId",
+                table: "Tags",
+                column: "BlogId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tags_BlogUserId",

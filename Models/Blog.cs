@@ -30,5 +30,6 @@ namespace BlogProject.Models
         
         public virtual BlogUser BlogUser { get; set; }
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
     }
 }

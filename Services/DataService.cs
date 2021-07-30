@@ -93,13 +93,25 @@ namespace BlogProject.Services
             var defaultPost = new Post
             {
                 Blog = defaultBlog,
+                BlogId = defaultBlog.Id,
                 BlogUser = defaultUser,
                 BlogUserId = defaultUser.Id,
                 Title = "Default Post",
                 Abstract = "This is the default blog post.",
                 Content = "This is the content of the default blog post.",
                 Created = DateTime.Now,
-                Slug = "default+post"
+                ReadyStatus = ReadyStatus.ProductionReady,
+                Slug = "default-post"
+            };
+
+            var defaultComment = new Comment()
+            {
+                Post = defaultPost,
+                PostId = defaultPost.Id,
+                Body = "This is the first default comment!",
+                BlogUser = defaultUser,
+                BlogUserId = defaultUser.Id,
+                Created = DateTime.Now,
             };
 
             var defaultTag = new Tag()
@@ -108,15 +120,20 @@ namespace BlogProject.Services
                 BlogUserId = defaultUser.Id,
                 PostId = defaultPost.Id,
                 Post = defaultPost,
+                Blog = defaultBlog,
+                BlogId = defaultBlog.Id,
                 Text = "Hair"
             };
             
             defaultBlog.Posts.Add( defaultPost );
+            defaultBlog.Tags.Add( defaultTag );
             defaultPost.Tags.Add( defaultTag );
-            
+            defaultPost.Comments.Add(defaultComment);
+
             await _dbContext.AddAsync(defaultBlog);
             await _dbContext.AddAsync(defaultPost);
             await _dbContext.AddAsync(defaultTag);
+            await _dbContext.AddAsync(defaultComment);
         }
     }
 }

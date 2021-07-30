@@ -1,13 +1,10 @@
-﻿@using BlogProject.Models
-@using BlogProject.Services
+﻿@using BlogProject.Services
 @using BlogProject.Enums
 @using BlogProject.ViewModels
 @using Microsoft.AspNetCore.Identity
-@using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 @using BlogProject.Data
-@using Microsoft.EntityFrameworkCore
 
 @inject IImageService _imageService
 @inject UserManager<BlogUser> _userManager
@@ -19,67 +16,59 @@
     ViewBag.Title = "Maxirose";
     Layout = "_Layout";
     var firstBlog = Model.Blogs.OrderByDescending(b => b.Created).FirstOrDefault();
-    var firstTag = _dbContext.Tags.FirstOrDefault();
+    var firstTag = _dbContext.Tags.OrderByDescending(t=>t.Id).FirstOrDefault();
 }
 <body>
 <!-- Main post-->
-@if (firstBlog is not null)
-{
-    <section class="bg-white pb-5">
-        <div class="container-fluid px-0 pnb-4">
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <div class="post-thumbnail" style="max-height: 400px; overflow: hidden">
-                        <img class="img-fluid w-100" src="@_imageService.DecodeImage(firstBlog.ImageData, firstBlog.ContentType)" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 mx-auto text-center">
-                    <ul class="list-inline">
-                        <li class="list-inline-item mr-3">
-                            @if (firstTag is not null )
-                            {
-                                    <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">#@firstTag.Text.ToLower()</a>
-                            }
-                        </li>
-                        <li class="list-inline-item mx-3">
-                            <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.BlogUser.FullName</a>
-                        </li>
-                        <li class="list-inline-item mx-3">
-                            <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.Created.ToString("MMM dd, yyyy")</a>
-                        </li>
-                    </ul>
-                    <h1 class="mb-4">
-                        <a class="d-block reset-anchor" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">@firstBlog.Name</a>
-                    </h1>
-                    @firstBlog.Description
-                    <a class="btn btn-link p-0 read-more-btn" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">
-                        <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
-                    </a>
+<section class="bg-white pb-5">
+    <div class="container-fluid px-0 pnb-4">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="post-thumbnail" style="max-height: 400px; overflow: hidden">
+                    <img class="img-fluid w-100" src="@_imageService.DecodeImage(firstBlog.ImageData, firstBlog.ContentType)" alt="">
                 </div>
             </div>
+            <div class="col-lg-6 mx-auto text-center">
+                <ul class="list-inline">
+                    <li class="list-inline-item mr-3">
+                        <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">@firstTag?.Text.ToLower()</a>
+                    </li>
+                    <li class="list-inline-item mx-3">
+                        <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.BlogUser.FullName</a>
+                    </li>
+                    <li class="list-inline-item mx-3">
+                        <a class="text-uppercase meta-link font-weight-normal" href="#">@firstBlog.Created.ToString("MMM dd, yyyy")</a>
+                    </li>
+                </ul>
+                <h1 class="mb-4">
+                    <a class="d-block reset-anchor" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">@firstBlog.Name</a>
+                </h1>
+                @firstBlog.Description
+                <a class="btn btn-link p-0 read-more-btn" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@firstBlog.Id">
+                    <span>Read more</span><i class="fas fa-long-arrow-alt-right"></i>
+                </a>
+            </div>
         </div>
-    </section>
-}
+    </div>
+</section>
+
 <!-- Top categories-->
 <section class="pb-5">
     <div class="container pb-4">
         <div class="row mb-5 pb-4">
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <a class="category-block bg-center bg-cover" style="background: url(img/category-bg-1.jpg)" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="Hair">
-                    <span class="category-block-title">Hair</span>
-                </a>
-            </div>
-            <div class="col-lg-4 mb-4 mb-lg-0">
-                <a class="category-block bg-center bg-cover" style="background: url(img/category-bg-2.jpg)" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="Fashion">
-                    <span class="category-block-title">Fashion</span>
-                </a>
-            </div>
-            <div class="col-lg-4">
-                <a class="category-block bg-center bg-cover" style="background: url(img/category-bg-3.jpg)" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="Makeup">
-                    <span class="category-block-title">Makeup</span>
-                </a>
-            </div>
+            @foreach (var tag in _dbContext.Tags)
+            {
+                var counter = 1;
+                var url = $"url(img/category-bg-{counter}.jpg)";
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <a class="category-block bg-center bg-cover" style="background: @url" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">
+                        <span class="category-block-title">@tag.Text.ToLower()</span>
+                    </a>
+                </div>
+                counter++;
+            }
         </div>
+        
         <!-- Newsletter-->
         <div class="p-4 bg-light">
             <div class="row align-items-center p-lg-3">
@@ -117,7 +106,7 @@
                         <div class="col-lg-6">
                             <ul class="list-inline">
                                 <li class="list-inline-item mr-2">
-                                    <a class="category-link font-weight-normal" href="#">Fashion</a>
+                                    <a class="category-link font-weight-normal" asp-controller="Posts" asp-action="TagIndex" asp-route-tag="@blog.Tags.First().Text">@blog.Tags.First().Text</a>
                                 </li>
                                 <li class="list-inline-item mx-2">
                                     <a class="text-uppercase meta-link font-weight-normal" href="#">@blog.BlogUser.FullName</a>
