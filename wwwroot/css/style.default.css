@@ -141,11 +141,11 @@ section {
 * ==========================================
 *
 */
-.post-thumnail {
+.post-thumbnail {
   position: relative;
 }
 
-.post-thumnail::before {
+.post-thumbnail::before {
   content: '';
   display: block;
   width: 100%;
