@@ -34,9 +34,8 @@
                 <div class="col-lg-6 mx-auto text-center">
                     <ul class="list-inline">
                         <li class="list-inline-item mr-3">
-                            @if (firstBlog.Posts.FirstOrDefault() is not null)
+                            @if (firstBlog.Posts.FirstOrDefault() is not null && firstTag is not null )
                             {
-                                if( firstTag is not null )
                                     <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">#@firstTag.Text.ToLower()</a>
                             }
                         </li>
