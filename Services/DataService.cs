@@ -78,6 +78,7 @@ namespace BlogProject.Services
         
         private async Task SeedBlogsAsync( BlogUser defaultUser )
         {
+            if (_dbContext.Blogs.Any()) return;
             var defaultBlog = new Blog()
             {
                 BlogUser = defaultUser,
@@ -86,6 +87,7 @@ namespace BlogProject.Services
                 Description = "The default blog build.",
             };
 
+            if( _dbContext.Posts.Any() ) return;
             var defaultPost = new Post()
             {
                 Blog = defaultBlog,
@@ -97,6 +99,7 @@ namespace BlogProject.Services
 
             };
 
+            if (_dbContext.Tags.Any()) return;
             var defaultTag = new Tag()
             {
                 BlogUser = defaultUser,
