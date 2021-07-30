@@ -35,8 +35,8 @@
                             @if (firstBlog.Posts.FirstOrDefault() is not null)
                             {
                                 var firstTag = firstBlog.Posts.FirstOrDefault().Tags.FirstOrDefault().Text.ToLower();
-
-                                <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">#@firstTag</a>
+                                if( firstTag is not null )
+                                    <a class="category-link font-weight-normal" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@firstTag">#@firstTag</a>
                             }
                         </li>
                         <li class="list-inline-item mx-3">
