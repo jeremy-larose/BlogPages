@@ -14,6 +14,7 @@ namespace BlogProject.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<BlogUser> _userManager;
+        private BlogUser _defaultUser;
 
         public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager)
         {
@@ -27,8 +28,9 @@ namespace BlogProject.Services
             await _dbContext.Database.MigrateAsync();
             await SeedRolesAsync();
             await SeedUsersAsync();
+            await SeedBlogsAsync( _defaultUser );
         }
-        
+
         private async Task SeedRolesAsync()
         {
             if (_dbContext.Roles.Any()) return;
@@ -56,7 +58,8 @@ namespace BlogProject.Services
 
             await _userManager.CreateAsync(adminUser, "Abc123!");
             await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
-            
+            _defaultUser = adminUser;
+
             var modUser = new BlogUser
             {
                 FirstName = "Macey",
@@ -70,6 +73,42 @@ namespace BlogProject.Services
 
             await _userManager.CreateAsync(modUser, "Abc123!");
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
+
+        }
+        
+        private async Task SeedBlogsAsync( BlogUser defaultUser )
+        {
+            var defaultBlog = new Blog()
+            {
+                BlogUser = defaultUser,
+                BlogUserId = defaultUser.Id,
+                Created = DateTime.Now,
+                Description = "The default blog build.",
+            };
+
+            var defaultPost = new Post()
+            {
+                Blog = defaultBlog,
+                BlogUser = defaultUser,
+                BlogUserId = defaultUser.Id,
+                Abstract = "This is the default blog post.",
+                Content = "This is the content of the default blog post.",
+                Created = DateTime.Now,
+
+            };
+
+            var defaultTag = new Tag()
+            {
+                BlogUser = defaultUser,
+                BlogUserId = defaultUser.Id,
+                PostId = defaultPost.Id,
+                Post = defaultPost,
+                Text = "Hair"
+            };
+            
+            await _dbContext.AddAsync(defaultBlog);
+            await _dbContext.AddAsync(defaultPost);
+            await _dbContext.AddAsync(defaultTag);
         }
     }
 }
