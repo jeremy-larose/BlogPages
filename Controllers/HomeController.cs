@@ -9,6 +9,7 @@ using BlogProject.Enums;
 using BlogProject.Models;
 using BlogProject.Services;
 using BlogProject.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 
@@ -19,13 +20,17 @@ namespace BlogProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IBlogEmailSender _emailSender;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BlogUser> _userManager;
+        private readonly IImageService _imageService;
         private const int ItemsPerPage = 5;
 
-        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context, UserManager<BlogUser> userManager, IImageService imageService)
         {
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _userManager = userManager;
+            _imageService = imageService;
         }
 
         public async Task<IActionResult> Index( int? page )
@@ -39,7 +44,9 @@ namespace BlogProject.Controllers
                     .OrderByDescending( b=>b.Created).ToPagedListAsync( pageNumber, ItemsPerPage ),
                 Posts = await _context.Posts.OrderByDescending( p=>p.Updated ).ToListAsync()
             };
-            
+            var adminUser = _userManager.Users.FirstOrDefault(u => u.Email == "maxirose@mailinator.com");
+
+            ViewData["UserImage"] = _imageService.DecodeImage(adminUser.ImageData, adminUser.ContentType); 
             return View( dataViewModel );
         }
         
