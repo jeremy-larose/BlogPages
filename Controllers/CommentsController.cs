@@ -103,13 +103,16 @@ namespace BlogProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
+
             if (ModelState.IsValid)
             {
                 comment.BlogUserId = _userManager.GetUserId(User);
+                comment.Post = _context.Posts.FirstOrDefault( p=>p.Id == comment.PostId );
                 comment.Created = DateTime.Now;
                 _context.Add(comment);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { slug = comment.Post.Slug }, "commentSection");
             }
 
             return View(comment);
@@ -146,9 +149,7 @@ namespace BlogProject.Controllers
             {
                 return NotFound();
             }
-
-            Console.WriteLine("Edit button was clicked.");
-
+            
             if (ModelState.IsValid)
             {
                 var newComment = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.Id == comment.Id);

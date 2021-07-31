@@ -112,40 +112,7 @@
             </div>
         </div>
     </section>
-    <div class="row">
-        <div class="col-9 border-right">
-            @Html.Raw(Model.Post.Content)
-        </div>
-        <div class="col-3 text-center font-weight-bold h6">
-            <div class="card">
-                <img class="card-img-top" src="/images/tags.png" alt="Tags...">
-                <div class="card-body">
-                    <h4 class="card-title">SYSTEM TAGS</h4>
-                    <div class="tagView">
-                        @foreach (var tag in Model.Tags)
-                        {
-                            <a asp-action="TagIndex" asp-route-tag="@tag" class="mb-1 btn btn-sm btn-warning btn-outline-dark">#@tag</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </article>
-
-<article>
-    <hr/>
-    <h3 class="text-center font-weight-bold">Tags</h3>
-    <div class="col text-center">
-        @foreach (var tag in Model.Post.Tags.ToList())
-        {
-            <a asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()" class="mb-1 btn btn-sm btn-warning btn-outline-dark">#@tag.Text</a>
-        }
-    </div>
-    <hr/>
-</article>
-
 
 <div>
 @if (User.Identity.IsAuthenticated)
@@ -159,12 +126,12 @@
             <textarea name="body" class="form-control" rows="10"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-dark btn-block btn-sm">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 }
 else
 {
-    <a class="btn btn-block btn-sm btn-dark" asp-area="Identity" asp-page="/Account/Login">
+    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">
         Login to add comments
     </a>
 }

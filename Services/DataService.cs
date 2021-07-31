@@ -14,12 +14,14 @@ namespace BlogProject.Services
         private readonly ApplicationDbContext _dbContext;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<BlogUser> _userManager;
+        private readonly ISlugService _slugService;
 
-        public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager)
+        public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager, ISlugService slugService)
         {
             _dbContext = dbContext;
             _roleManager = roleManager;
             _userManager = userManager;
+            _slugService = slugService;
         }
 
         public async Task ManageDataAsync()
@@ -101,7 +103,7 @@ namespace BlogProject.Services
                 Content = "This is the content of the default blog post.",
                 Created = DateTime.Now,
                 ReadyStatus = ReadyStatus.ProductionReady,
-                Slug = "default-post"
+                Slug = _slugService.URLFriendly( "Default Post ")
             };
 
             var defaultComment = new Comment()
@@ -117,23 +119,23 @@ namespace BlogProject.Services
             var defaultTag = new Tag()
             {
                 BlogUser = defaultUser,
-                BlogUserId = defaultUser.Id,
                 PostId = defaultPost.Id,
                 Post = defaultPost,
                 Blog = defaultBlog,
                 BlogId = defaultBlog.Id,
+                BlogUserId = defaultUser.Id,
                 Text = "Hair"
             };
+            
+            await _dbContext.AddAsync(defaultBlog);
+            await _dbContext.AddAsync(defaultPost);
+            await _dbContext.AddAsync(defaultTag);
+            await _dbContext.AddAsync(defaultComment);
             
             defaultBlog.Posts.Add( defaultPost );
             defaultBlog.Tags.Add( defaultTag );
             defaultPost.Tags.Add( defaultTag );
             defaultPost.Comments.Add(defaultComment);
-
-            await _dbContext.AddAsync(defaultBlog);
-            await _dbContext.AddAsync(defaultPost);
-            await _dbContext.AddAsync(defaultTag);
-            await _dbContext.AddAsync(defaultComment);
         }
     }
 }
