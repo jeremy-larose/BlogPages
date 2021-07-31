@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BlogProject.Data;
@@ -6,6 +7,7 @@ using BlogProject.Enums;
 using BlogProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BlogProject.Services
 {
@@ -15,13 +17,17 @@ namespace BlogProject.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<BlogUser> _userManager;
         private readonly ISlugService _slugService;
+        private readonly IImageService _imageService;
+        private readonly IConfiguration _configuration;
 
-        public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager, ISlugService slugService)
+        public DataService(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<BlogUser> userManager, ISlugService slugService, IImageService imageService, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _roleManager = roleManager;
             _userManager = userManager;
             _slugService = slugService;
+            _imageService = imageService;
+            _configuration = configuration;
         }
 
         public async Task ManageDataAsync()
@@ -53,7 +59,9 @@ namespace BlogProject.Services
                 Email = "maxirose@mailinator.com",
                 UserName = "maxirose@mailinator.com",
                 PhoneNumber = "(555) 555-5555",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                ImageData = await _imageService.EncodeImageAsync( _configuration["DefaultUserImage"]),
+                ContentType = Path.GetExtension( _configuration["DefaultUserImage"] )
             };
 
             await SeedBlogsAsync(adminUser);
@@ -68,7 +76,9 @@ namespace BlogProject.Services
                 Email = "Maceylarose@mailinator.com",
                 UserName = "Maceylarose@mailinator.com",
                 PhoneNumber = "(989) 777-7777",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                ImageData = await _imageService.EncodeImageAsync( _configuration["DefaultUserImage"]),
+                ContentType = Path.GetExtension( _configuration["DefaultUserImage"] )
             };
 
             await _userManager.CreateAsync(modUser, "Abc123!");
@@ -81,7 +91,6 @@ namespace BlogProject.Services
             if (_dbContext.Blogs.Any()) return;
             if( _dbContext.Posts.Any() ) return;
             if (_dbContext.Tags.Any()) return;
-
 
             var defaultBlog = new Blog
             {
@@ -103,7 +112,9 @@ namespace BlogProject.Services
                 Content = "This is the content of the default blog post.",
                 Created = DateTime.Now,
                 ReadyStatus = ReadyStatus.ProductionReady,
-                Slug = _slugService.URLFriendly( "Default Post ")
+                Slug = _slugService.URLFriendly( "Default Post "),
+                ImageData = await _imageService.EncodeImageAsync( _configuration["DefaultPostImage"]),
+                ContentType = Path.GetExtension( _configuration["DefaultPostImage"] )
             };
 
             var defaultComment = new Comment()

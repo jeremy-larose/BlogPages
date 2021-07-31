@@ -13,6 +13,8 @@
 @{
     var firstBlog = Model.Blog.FirstOrDefault();
     var tag = Model.Tags;
+    ViewData["Title"] = $"{firstBlog?.Name} ";}
+
 }
 <!------------------ Blog Post Index  --------------------
 - Contains the index of posts when clicked from home page.
