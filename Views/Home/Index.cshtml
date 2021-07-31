@@ -16,7 +16,6 @@
     ViewBag.Title = "Maxirose";
     Layout = "_Layout";
     var firstBlog = Model.Blogs.OrderByDescending(b => b.Created).FirstOrDefault();
-    var firstTag = Model.Tags.FirstOrDefault();
 }
 <body>
 <!-- Main post-->
@@ -56,12 +55,12 @@
 <section class="pb-5">
     <div class="container pb-4">
         <div class="row mb-5 pb-4">
-            @foreach (var tag in _dbContext.Tags)
+            @foreach (var tag in Model.Tags)
             {
                 var counter = 1;
                 var url = $"url(img/category-bg-{counter}.jpg)";
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <a class="category-block bg-center bg-cover" style="background: @url" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">
+                    <a class="category-block bg-center bg-cover" style="background: @url" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag.Text">
                         <span class="category-block-title">@tag.Text.ToLower()</span>
                     </a>
                 </div>
@@ -223,7 +222,7 @@
                             @foreach (var tag in Model.Tags)
                             {
                                 <li class="list-inline-item my-1 mr-2">
-                                    <a class="sidebar-tag-link" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">@tag</a>
+                                    <a class="sidebar-tag-link" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">@tag.Text</a>
                                 </li>
                             }
                         </ul>

@@ -54,8 +54,10 @@ namespace BlogProject.Controllers
                     .Where(p => p.BlogId == id && p.ReadyStatus == ReadyStatus.ProductionReady)
                     .OrderByDescending(p => p.Created)
                     .ToPagedListAsync(pageNumber, ItemsPerPage),
-                Blog = _context.Blogs.Where(b => b.Id == id).Include( b=>b.BlogUser )
+                Blog = _context.Blogs.Where(b => b.Id == id).Include( b=>b.BlogUser ),
+                Tags = await _context.Tags.ToListAsync()
             };
+            
             return View(postBlogIndexViewModel);
         }
 

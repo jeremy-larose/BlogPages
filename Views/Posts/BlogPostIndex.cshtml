@@ -12,6 +12,7 @@
 @model BlogProject.ViewModels.PostBlogIndexViewModel
 @{
     var firstBlog = Model.Blog.FirstOrDefault();
+    var tag = Model.Tags;
 }
 <!------------------ Blog Post Index  --------------------
 - Contains the index of posts when clicked from home page.
@@ -73,7 +74,7 @@
 
                             <ul class="d-flex list-unstyled mt-auto">
                                 <li class="list-inline-item mx-2">
-                                    <a class="category-link font-weight-normal" href="#">Fashion</a>
+                                    <a class="category-link font-weight-normal" href="#">@tag.FirstOrDefault()?.Text</a>
                                 </li>
                                 <li class="list-inline-item mx-2">
                                     @*<a class="text-uppercase meta-link font-weight-normal" href="#">@post.BlogUser.FullName</a>*@
@@ -114,49 +115,3 @@
         </div>
     </div>
 </section>
-
-<div class="row">
-    @foreach (var post in Model.Posts)
-    {
-        //Is the logged in user the Author of this post??
-        var isAuthor = false;
-        if (User.Identity.IsAuthenticated)
-        {
-            isAuthor = (post.BlogUserId == userManager.GetUserId(User));
-        }
-
-        <div class="col-sm-2 col-lg-4">
-            <div class="card border-dark">
-                <div class="card-body text-center">
-                    <div class="bg-warning">
-                        <hr class="card-hr" />
-                        <h5 class="card-title">@post.Title</h5>
-                        <hr class="card-hr" />
-                    </div>
-                    <div>
-                        <p class="card-text">@post.Abstract</p>
-                    </div>
-
-                    <br />
-                    <div class="text-center">
-                        <a class="btn btn-dark btn-sm btn-block mb-2" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">Read More</a>
-                    </div>
-
-
-                </div>
-                <img class="card-img-bottom" src="@_imageService.DecodeImage(post.ImageData, post.ContentType)" />
-            </div>
-
-        </div>
-        @if (User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor)
-        {
-            <div class="text-center">
-                <a class="btn btn-success btn-sm btn-block border-dark" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit Post</a>
-            </div>
-        }
-    }
-
-</div>
-
-<hr />
-
