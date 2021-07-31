@@ -118,12 +118,8 @@ namespace BlogProject.Services
 
             var defaultTag = new Tag()
             {
-                BlogUser = defaultUser,
                 PostId = defaultPost.Id,
                 Post = defaultPost,
-                Blog = defaultBlog,
-                BlogId = defaultBlog.Id,
-                BlogUserId = defaultUser.Id,
                 Text = "Hair"
             };
             
@@ -133,7 +129,7 @@ namespace BlogProject.Services
             await _dbContext.AddAsync(defaultComment);
             
             defaultBlog.Posts.Add( defaultPost );
-            defaultBlog.Tags.Add( defaultTag );
+            //defaultBlog.Tags.Add( defaultTag );
             defaultPost.Tags.Add( defaultTag );
             defaultPost.Comments.Add(defaultComment);
         }

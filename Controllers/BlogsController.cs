@@ -30,7 +30,9 @@ namespace BlogProject.Controllers
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
+            //var applicationDbContext = _context.Blogs.Include(b => b.BlogUser).Include(b=>b.Tags);
             var applicationDbContext = _context.Blogs.Include(b => b.BlogUser);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -80,8 +82,6 @@ namespace BlogProject.Controllers
                 {
                     _context.Add(new Tag()
                     {
-                        BlogId = blog.Id,
-                        BlogUserId = authorId,
                         Text = tagText,
                     });
                 }
@@ -90,7 +90,7 @@ namespace BlogProject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
+            //ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
             ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", blog.BlogUserId);
             return View(blog);
         }
@@ -103,11 +103,14 @@ namespace BlogProject.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs.FindAsync(id);
+            //var blog = await _context.Blogs.Include(b=>b.Tags).FirstOrDefaultAsync(b=>b.Id == id );
+            var blog = await _context.Blogs.FirstOrDefaultAsync(b=>b.Id == id );
+
             if (blog == null)
             {
                 return NotFound();
             }
+            //ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
             return View(blog);
         }
 
@@ -127,7 +130,9 @@ namespace BlogProject.Controllers
             {
                 try
                 {
-                    var newBlog = await _context.Blogs.FindAsync(blog.Id);
+                    //var newBlog = await _context.Blogs.Include(b=>b.Tags).FirstOrDefaultAsync(b=>b.Id == blog.Id );
+                    var newBlog = await _context.Blogs.FirstOrDefaultAsync(b=>b.Id == blog.Id );
+
                     newBlog.Updated = DateTime.Now;
                     
                     if( newBlog.Name != blog.Name )
@@ -140,15 +145,13 @@ namespace BlogProject.Controllers
                         newBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
                     
                     // Remove all tags previously associated with this post
-                    _context.Tags.RemoveRange(newBlog.Tags);
+                    //_context.Tags.RemoveRange(newBlog.Tags);
 
                     // Add in new tags from the edit form
                     foreach (var tagText in tagValues)
                     {
                         _context.Add(new Tag()
                         {
-                            BlogId = blog.Id,
-                            BlogUserId = newBlog.BlogUserId,
                             Text = tagText,
                         });
                     }
@@ -168,7 +171,7 @@ namespace BlogProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
+            //ViewData["TagValues"] = string.Join(",", blog.Tags.Select(t => t.Text));
             ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", blog.BlogUserId);
             return View(blog);
         }

@@ -39,7 +39,7 @@ namespace BlogProject.Controllers
 
             var dataViewModel = new HomeViewModel
             {
-                Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList(),
+                Tags = await _context.Tags.ToListAsync(),
                 Blogs = await _context.Blogs.Include( b=>b.BlogUser)
                     .OrderByDescending( b=>b.Created).ToPagedListAsync( pageNumber, ItemsPerPage ),
                 Posts = await _context.Posts.OrderByDescending( p=>p.Updated ).ToListAsync()

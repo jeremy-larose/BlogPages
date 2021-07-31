@@ -172,7 +172,6 @@ namespace BlogProject.Controllers
                     _context.Add(new Tag()
                     {
                         PostId = post.Id,
-                        BlogUserId = authorId,
                         Text = tagText,
                     });
                 }
@@ -193,7 +192,8 @@ namespace BlogProject.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
+            var post = await _context.Posts.Include(p=>p.BlogUser)
+                .Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
 
             if (post == null)
             {
@@ -263,7 +263,6 @@ namespace BlogProject.Controllers
                         _context.Add(new Tag()
                         {
                             PostId = post.Id,
-                            BlogUserId = newPost.BlogUserId,
                             Text = tagText,
                         });
                     }

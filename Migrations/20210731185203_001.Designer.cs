@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BlogProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210730201425_001")]
+    [Migration("20210731185203_001")]
     partial class _001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,12 +188,6 @@ namespace BlogProject.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("BlogId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("BlogUserId")
-                        .HasColumnType("text");
-
                     b.Property<int>("PostId")
                         .HasColumnType("integer");
 
@@ -203,10 +197,6 @@ namespace BlogProject.Migrations
                         .HasColumnType("character varying(25)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
-
-                    b.HasIndex("BlogUserId");
 
                     b.HasIndex("PostId");
 
@@ -498,25 +488,11 @@ namespace BlogProject.Migrations
 
             modelBuilder.Entity("BlogProject.Models.Tag", b =>
                 {
-                    b.HasOne("BlogProject.Models.Blog", "Blog")
-                        .WithMany("Tags")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlogProject.Models.BlogUser", "BlogUser")
-                        .WithMany()
-                        .HasForeignKey("BlogUserId");
-
                     b.HasOne("BlogProject.Models.Post", "Post")
                         .WithMany("Tags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Blog");
-
-                    b.Navigation("BlogUser");
 
                     b.Navigation("Post");
                 });
@@ -575,8 +551,6 @@ namespace BlogProject.Migrations
             modelBuilder.Entity("BlogProject.Models.Blog", b =>
                 {
                     b.Navigation("Posts");
-
-                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("BlogProject.Models.Post", b =>

@@ -9,7 +9,7 @@ namespace BlogProject.ViewModels
 {
     public class HomeViewModel
     {
-        public List<string> Tags { get; set; } = new List<string>();
+        public List<Tag> Tags { get; set; } = new List<Tag>();
         public IPagedList<Blog> Blogs { get; set; }
         public List<Post> Posts { get; set; } = new List<Post>();
     }
