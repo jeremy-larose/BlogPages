@@ -13,6 +13,7 @@ using BlogProject.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using X.PagedList;
+using Microsoft.Extensions.Hosting;
 
 namespace BlogProject.Controllers
 {
@@ -67,7 +68,7 @@ namespace BlogProject.Controllers
             var allPostIds = _context.Tags.Where(t => t.Text == tag).Select(t => t.PostId);
             var posts = await _context.Posts.Where(p => allPostIds.Contains(p.Id)).ToListAsync();
             return View("Index", posts);
-        }
+}
 
         public async Task<IActionResult> SearchIndex( int? page, string searchTerm )
         {

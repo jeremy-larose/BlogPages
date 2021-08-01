@@ -8,16 +8,48 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<section class="pb-5">
+    <div class="container px-4 py-5">
+        <div class="center">
+            <h1>Index</h1>
+            <a class="btn btn-success btn-block border-dark" asp-action="Create" asp-controller="Posts">Create New Post</a>
+        </div>
+        <div class="row row-cols-1 row-cols-lg-2 align-items-stretch g-4 py-5">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @{
+                        var first = true;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <div class="carousel-item @(first ? Html.Raw("active") : Html.Raw(""))">
+                            <img class="d-block w-100" style="max-height: 400px; background-size: contain; overflow: hidden" src="@_imageService.DecodeImage(item.ImageData, item.ContentType)" alt="@item.Title">
+                        </div>
+                        first = false;
+                    }
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                   data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                   data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*
 <table class="table">
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor( model => model.Image )
+            @Html.DisplayNameFor(model => model.Image)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -29,22 +61,25 @@
     </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td><img class="img-fluid" width="200px;" src="@_imageService.DecodeImage( item.ImageData, item.ContentType)"/></td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Abstract)
-        </td>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img class="img-fluid" style="width: 200px;" src="@_imageService.DecodeImage(item.ImageData, item.ContentType)" alt=""/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Abstract)
+            </td>
 
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-        </td>
-    </tr>
-}
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
     </tbody>
-</table>
+</table> *@

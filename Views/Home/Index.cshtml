@@ -60,8 +60,8 @@
                 var counter = 1;
                 var url = $"url(img/category-bg-{counter}.jpg)";
                 <div class="col-lg-4 mb-4 mb-lg-0">
-                    <a class="category-block bg-center bg-cover" style="background: @url" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag.Text">
-                        <span class="category-block-title">@tag.Text.ToLower()</span>
+                    <a class="category-block bg-center bg-cover" style="background: @url" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">
+                        <span class="category-block-title">@tag.ToLower()</span>
                     </a>
                 </div>
                 counter++;
@@ -222,7 +222,7 @@
                             @foreach (var tag in Model.Tags)
                             {
                                 <li class="list-inline-item my-1 mr-2">
-                                    <a class="sidebar-tag-link" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">@tag.Text</a>
+                                    <a class="sidebar-tag-link" asp-action="TagIndex" asp-controller="Posts" asp-route-tag="@tag">@tag</a>
                                 </li>
                             }
                         </ul>
